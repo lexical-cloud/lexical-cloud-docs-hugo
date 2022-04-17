@@ -1,9 +1,10 @@
 ---
 services: "databases"
-providers: "aws"
+providers: "azure"
 classifiers:
   - "nosql db"
   - "document db"
-title: "Cosmos DB"
-linkTitle: "Cosmos DB"
+  - "serverless"
+title: "Azure Cosmos DB"
+linkTitle: "Azure Cosmos DB"
 ---
