@@ -1,5 +1,5 @@
 ---
-services: "databases"
+services: "database"
 providers: "aws"
 classifiers:
   - "nosql db"
