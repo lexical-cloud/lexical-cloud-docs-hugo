@@ -4,7 +4,7 @@ providers: "aws"
 classifiers:
   - "unstructured data"
   - "sql compliant"
-  - "severless"
+  - "serverless"
 title: "Amazon Athena"
 linkTitle: "Amazon Athena"
 ---
