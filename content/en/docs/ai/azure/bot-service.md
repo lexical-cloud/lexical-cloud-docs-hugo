@@ -1,6 +1,6 @@
 ---
 services: "ai"
-providers: "aws"
+providers: "azure"
 classifiers:
   - "conversational interface"
   - "serverless"
