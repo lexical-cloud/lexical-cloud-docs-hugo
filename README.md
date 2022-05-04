@@ -1,7 +1,9 @@
 Add theme
 ```
-mkdir themes
-cd themes
-ln -s ../../docsy docsy
+git submodule init
+git submodule update
+cd themes/docsy
+npm install
+npm install hugo-extended --save-dev
 ```
 
