@@ -1,9 +1,9 @@
 ---
 services: "developer-tool"
-providers: "aws"
+providers: "azure"
 classifiers:
   - "infrastructure as code"
   - "deployment management"
-title: "AWS CloudFormation"
-linkTitle: "AWS CloudFormation"
+title: "Azure Resource Manager"
+linkTitle: "Azure Resource Manager"
 ---
