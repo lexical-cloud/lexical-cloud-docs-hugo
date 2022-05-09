@@ -1,7 +1,7 @@
 ---
 services: "governance"
 providers: "azure"
-classifiers:
+categories:
   - "policy management"
 title: "Azure Initiative"
 linkTitle: "Azure Initiative"

@@ -1,7 +1,7 @@
 ---
 services: "storage"
 providers: "azure"
-classifiers:
+categories:
   - "object storage"
   - "serverless"
 title: "Azure Blob Storage"

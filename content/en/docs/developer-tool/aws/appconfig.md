@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "aws"
-classifiers:
+categories:
   - "continuous configuration"
 title: "AWS AppConfig"
 linkTitle: "AWS AppConfig"

@@ -1,7 +1,7 @@
 ---
 services: "database"
 providers: "aws"
-classifiers:
+categories:
   - "nosql db"
   - "document db"
   - "serverless"

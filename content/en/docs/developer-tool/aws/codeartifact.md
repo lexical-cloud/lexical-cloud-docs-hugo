@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "aws"
-classifiers:
+categories:
   - "artifact repository"
 title: "AWS CodeArtifact"
 linkTitle: "AWS CodeArtifact"

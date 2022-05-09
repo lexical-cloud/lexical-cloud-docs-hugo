@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "source control"
 title: "Azure Repos"
 linkTitle: "Azure Repos"

@@ -1,7 +1,7 @@
 ---
 services: "migration"
 providers: "aws"
-classifiers:
+categories:
   - "application discovery"
 labels:
   - "modernization"

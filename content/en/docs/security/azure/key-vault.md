@@ -1,7 +1,7 @@
 ---
 services: "security"
 providers: "azure"
-classifiers:
+categories:
   - "secret management"
   - "key management"
   - "auditing"

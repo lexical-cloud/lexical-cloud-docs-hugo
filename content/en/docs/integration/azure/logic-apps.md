@@ -1,7 +1,7 @@
 ---
 services: "integration"
 providers: "azure"
-classifiers:
+categories:
   - "low-code"
   - "workflow"
   - "serverless"

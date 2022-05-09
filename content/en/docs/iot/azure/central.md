@@ -1,7 +1,7 @@
 ---
 services: "iot"
 providers: "azure"
-classifiers: 
+categories: 
   - "iot management"
 title: "Azure IoT Central"
 linkTitle: "Azure IoT Central"

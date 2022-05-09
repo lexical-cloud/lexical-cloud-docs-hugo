@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "azure"
-classifiers: "virtual machines"
+categories: "virtual machines"
 title: "Azure Virtual Machines"
 linkTitle: "Azure Virtual Machines"
 ---

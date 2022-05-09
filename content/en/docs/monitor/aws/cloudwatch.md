@@ -1,7 +1,7 @@
 ---
 services: "monitor"
 providers: "aws"
-classifiers:
+categories:
   - "observability"
   - "notifications"
 title: "Amazon CloudWatch"

@@ -1,7 +1,7 @@
 ---
 services: "network"
 providers: "azure"
-classifiers: "private network"
+categories: "private network"
 title: "Azure ExpressRoute"
 linkTitle: "Azure ExpressRoute"
 ---

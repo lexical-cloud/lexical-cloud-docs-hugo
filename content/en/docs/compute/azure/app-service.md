@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "azure"
-classifiers: "paas"
+categories: "paas"
 title: "Azure App Service"
 linkTitle: "Azure App Service"
 ---

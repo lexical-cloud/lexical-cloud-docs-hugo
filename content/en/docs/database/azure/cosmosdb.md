@@ -1,7 +1,7 @@
 ---
 services: "database"
 providers: "azure"
-classifiers:
+categories:
   - "nosql db"
   - "document db"
   - "serverless"

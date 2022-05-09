@@ -1,7 +1,7 @@
 ---
 services: "security"
 providers: "azure"
-classifiers:
+categories:
   - "security monitoring"
   - "auditing"
 title: "Azure Security Center"

@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "aws"
-classifiers: "serverless"
+categories: "serverless"
 title: "AWS Lambda"
 linkTitle: "AWS Lambda"
 ---

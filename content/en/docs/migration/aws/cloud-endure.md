@@ -1,7 +1,7 @@
 ---
 services: "migration"
 providers: "aws"
-classifiers:
+categories:
   - "server migration"
 labels:
   - "deprecated"

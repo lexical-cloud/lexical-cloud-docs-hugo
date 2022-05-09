@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "continuous configuration"
 title: "Azure App Configuration"
 linkTitle: "Azure App Configuration"

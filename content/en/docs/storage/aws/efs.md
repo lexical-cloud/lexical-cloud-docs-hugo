@@ -1,7 +1,7 @@
 ---
 services: "storage"
 providers: "aws"
-classifiers: 
+categories: 
   - "file storage"
   - "serverless"
 title: "Amazon Elastic File Storage"

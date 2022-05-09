@@ -1,7 +1,7 @@
 ---
 services: "network"
 providers: "aws"
-classifiers: 
+categories: 
   - "load balancer"
   - "application load balancer"
   - "gateway load balancer"

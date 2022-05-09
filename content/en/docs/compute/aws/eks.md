@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "aws"
-classifiers: "kubernetes"
+categories: "kubernetes"
 title: "Amazon Elastic Kubernetes Service"
 linkTitle: "Amazon EKS"
 ---

@@ -1,7 +1,7 @@
 ---
 services: "governance"
 providers: "azure"
-classifiers:
+categories:
   - "resource management"
 title: "Azure Policy"
 linkTitle: "Azure Policy"

@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "aws"
-classifiers:
+categories:
   - "continuous integration"
 title: "AWS CodeBuild"
 linkTitle: "AWS CodeBuild"

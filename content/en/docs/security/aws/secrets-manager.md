@@ -1,7 +1,7 @@
 ---
 services: "security"
 providers: "aws"
-classifiers:
+categories:
   - "secret management"
 title: "AWS Secrets Manager"
 linkTitle: "AWS Secrets Manager"

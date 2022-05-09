@@ -1,7 +1,7 @@
 ---
 services: "framework"
 providers: "azure"
-classifiers:
+categories:
   - "decision making"
 labels:
   - "modernization"

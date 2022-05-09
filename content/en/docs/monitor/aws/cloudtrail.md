@@ -1,7 +1,7 @@
 ---
 services: "monitor"
 providers: "aws"
-classifiers:
+categories:
   - "auditing"
 title: "Amazon CloudTrail"
 linkTitle: "Amazon CloudTrail"

@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "aws"
-classifiers: "paas"
+categories: "paas"
 title: "AWS Elastic Beanstalk"
 linkTitle: "AWS Elastic Beanstalk"
 ---

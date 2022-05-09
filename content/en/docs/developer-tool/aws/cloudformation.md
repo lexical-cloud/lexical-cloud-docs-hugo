@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "aws"
-classifiers:
+categories:
   - "infrastructure as code"
   - "deployment management"
 title: "AWS CloudFormation"

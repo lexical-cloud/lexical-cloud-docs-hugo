@@ -1,7 +1,7 @@
 ---
 services: "database"
 providers: "aws"
-classifiers:
+categories:
   - "unstructured data"
   - "sql compliant"
   - "serverless"

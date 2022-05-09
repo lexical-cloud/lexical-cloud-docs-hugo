@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "aws"
-classifiers:
+categories:
   - "source control"
 title: "AWS CodeCommit"
 linkTitle: "AWS CodeCommit"

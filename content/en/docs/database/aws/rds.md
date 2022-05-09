@@ -1,7 +1,7 @@
 ---
 services: "database"
 providers: "aws"
-classifiers:
+categories:
   - "relational db"
   - "sql compliant"
   - "serverless"

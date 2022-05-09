@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "systems management"
 title: "Azure Automation"
 linkTitle: "Azure Automation"

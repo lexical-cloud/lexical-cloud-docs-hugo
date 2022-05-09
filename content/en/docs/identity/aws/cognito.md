@@ -1,7 +1,7 @@
 ---
 services: "identity"
 providers: "aws"
-classifiers:
+categories:
   - "user enrollment"
   - "user authentication"
   - "user authorization"

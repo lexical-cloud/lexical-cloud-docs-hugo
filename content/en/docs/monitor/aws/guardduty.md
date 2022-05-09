@@ -1,7 +1,7 @@
 ---
 services: "monitor"
 providers: "aws"
-classifiers:
+categories:
   - "threat detection"
 title: "AWS GuardDuty"
 linkTitle: "AWS GuardDuty"

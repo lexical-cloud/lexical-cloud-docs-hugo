@@ -1,7 +1,7 @@
 ---
 services: "storage"
 providers: "aws"
-classifiers: "block storage"
+categories: "block storage"
 title: "Amazon Elastic Block Storage"
 linkTitle: "Amazon EBS"
 ---

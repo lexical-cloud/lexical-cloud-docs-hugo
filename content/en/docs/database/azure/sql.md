@@ -1,7 +1,7 @@
 ---
 services: "database"
 providers: "azure"
-classifiers:
+categories:
   - "relational db"
   - "sql compliant"
   - "serverless"

@@ -1,7 +1,7 @@
 ---
 services: "iot"
 providers: "azure"
-classifiers: 
+categories: 
   - "iot hardware"
   - "iot security"
 title: "Azure Sphere"

@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "infrastructure as code"
   - "deployment management"
 title: "Azure Resource Manager"

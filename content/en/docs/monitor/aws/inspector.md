@@ -1,7 +1,7 @@
 ---
 services: "monitor"
 providers: "aws"
-classifiers:
+categories:
   - "vulnerability management"
 title: "Amazon Inspector"
 linkTitle: "Amazon Inspector"

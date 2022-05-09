@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "aws"
-classifiers:
+categories:
   - "continuous delivery"
 title: "AWS CodePipeline"
 linkTitle: "AWS CodePipeline"

@@ -1,7 +1,7 @@
 ---
 services: "security"
 providers: "azure"
-classifiers:
+categories:
   - "siem"
 title: "Azure Sentinel"
 linkTitle: "Azure Sentinel"

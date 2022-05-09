@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "azure"
-classifiers: "kubernetes"
+categories: "kubernetes"
 title: "Azure Kubernetes Service"
 linkTitle: "Azure Kubernetes Service"
 ---

@@ -1,7 +1,7 @@
 ---
 services: "framework"
 providers: "aws"
-classifiers:
+categories:
   - "decision making"
   - "architecture"
 title: "AWS Well-Architected Framework"

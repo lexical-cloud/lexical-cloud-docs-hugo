@@ -1,7 +1,7 @@
 ---
 services: "storage"
 providers: "aws"
-classifiers:
+categories:
   - "object storage"
   - "data archive"
   - "serverless"

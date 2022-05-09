@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "azure"
-classifiers: "serverless"
+categories: "serverless"
 title: "Azure Functions"
 linkTitle: "Azure Functions"
 ---

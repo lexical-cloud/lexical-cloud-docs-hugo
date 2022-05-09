@@ -1,7 +1,7 @@
 ---
 services: "ai"
 providers: "aws"
-classifiers:
+categories:
   - "machine learning"
   - "prebuilt models"
   - "serverless"

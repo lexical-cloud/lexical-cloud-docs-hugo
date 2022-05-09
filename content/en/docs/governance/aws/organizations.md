@@ -1,7 +1,7 @@
 ---
 services: "governance"
 providers: "aws"
-classifiers:
+categories:
   - "account management"
 title: "AWS Organizations"
 linkTitle: "AWS Organizations"

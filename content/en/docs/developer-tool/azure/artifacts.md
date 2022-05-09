@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "artifact repository"
 title: "Azure Artifacts"
 linkTitle: "Azure Artifacts"

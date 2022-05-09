@@ -1,7 +1,7 @@
 ---
 services: "migration"
 providers: "aws"
-classifiers:
+categories:
   - "server migration"
 title: "AWS Application Migration Service"
 linkTitle: "AWS Application Migration Service"

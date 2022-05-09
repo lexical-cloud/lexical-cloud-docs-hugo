@@ -1,7 +1,7 @@
 ---
 services: "security"
 providers: "aws"
-classifiers:
+categories:
   - "key management"
   - "auditing"
 title: "AWS Key Management Service"

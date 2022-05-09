@@ -1,7 +1,7 @@
 ---
 services: "ai"
 providers: "aws"
-classifiers:
+categories:
   - "conversational interface"
   - "serverless"
 title: "Amaxon Lex"

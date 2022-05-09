@@ -1,7 +1,7 @@
 ---
 services: "ai"
 providers: "azure"
-classifiers:
+categories:
   - "machine learning"
   - "prebuilt models"
   - "serverless"

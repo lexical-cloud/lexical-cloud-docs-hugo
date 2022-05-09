@@ -1,7 +1,7 @@
 ---
 services: "governance"
 providers: "azure"
-classifiers:
+categories:
   - "environment management"
 title: "Azure Blueprints"
 linkTitle: "Azure Blueprints"

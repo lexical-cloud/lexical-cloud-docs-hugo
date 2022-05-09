@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "project planning"
 title: "Azure Boards"
 linkTitle: "Azure Boards"

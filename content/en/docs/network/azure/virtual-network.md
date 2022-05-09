@@ -1,7 +1,7 @@
 ---
 services: "network"
 providers: "azure"
-classifiers: "virtual network"
+categories: "virtual network"
 title: "Azure Virtual Network"
 linkTitle: "Azure Virtual Network"
 ---

@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "continuous integation"
   - "continuous deployment"
   - "continuous delivery"

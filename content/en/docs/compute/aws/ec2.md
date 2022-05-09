@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "aws"
-classifiers: "virtual machines"
+categories: "virtual machines"
 title: "Amazon Elastic Compute Cloud"
 linkTitle: "Amazon EC2"
 ---

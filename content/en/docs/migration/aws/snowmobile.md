@@ -1,7 +1,7 @@
 ---
 services: "migration"
 providers: "aws"
-classifiers:
+categories:
   - "data transfer"
 labels:
   - "modernization"

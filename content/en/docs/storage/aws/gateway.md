@@ -1,7 +1,7 @@
 ---
 services: "storage"
 providers: "aws"
-classifiers:
+categories:
   - "hybrid cloud storage"
 labels:
   - "modernization"

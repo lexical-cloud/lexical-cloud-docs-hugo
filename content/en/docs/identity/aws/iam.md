@@ -1,7 +1,7 @@
 ---
 services: "identity"
 providers: "aws"
-classifiers:
+categories:
   - "identity management"
   - "access management"
 title: "AWS Identity and Access Management"

@@ -1,7 +1,7 @@
 ---
 services: "integration"
 providers: "aws"
-classifiers:
+categories:
   - "REST APIs"
   - "HTTP APIs"
   - "WebSocket APIs"

@@ -1,7 +1,7 @@
 ---
 services: "compute"
 providers: "aws"
-classifiers: 
+categories: 
   - "virtual machines"
   - "auto scaling"
 title: "Amazon EC2 Auto Scaling"

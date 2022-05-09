@@ -14,7 +14,7 @@ defaultContentLanguageInSubdir = false
 [taxonomies]
 provider = "providers"
 service = "services"
-classifier = "classifiers"
+category = "categories"
 feature = "features"
 label = "labels"
 
@@ -29,13 +29,13 @@ github_repo = "https://github.com/lexical-cloud/lexical-cloud-hugo"
 
 [params.taxonomy]
 # set taxonomyCloud = [] to hide taxonomy clouds
-taxonomyCloud = ["providers", "services", "classifiers", "features", "labels"]
+taxonomyCloud = ["providers", "services", "categories", "features", "labels"]
 
 # If used, must have same length as taxonomyCloud
-taxonomyCloudTitle = ["Providers", "Services", "Classifiers", "Features", "Labels"]
+taxonomyCloudTitle = ["Providers", "Services", "Categories", "Features", "Labels"]
 
 # set taxonomyPageHeader = [] to hide taxonomies on the page headers
-taxonomyPageHeader = ["providers", "services", "classifiers", "features", "labels"]
+taxonomyPageHeader = ["providers", "services", "categories", "features", "labels"]
 
 # User interface configuration
 [params.ui]

@@ -1,7 +1,7 @@
 ---
 services: "integration"
 providers: "aws"
-classifiers:
+categories:
   - "low-code"
   - "workflow"
   - "serverless"

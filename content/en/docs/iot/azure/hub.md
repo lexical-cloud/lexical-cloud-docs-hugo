@@ -1,7 +1,7 @@
 ---
 services: "iot"
 providers: "azure"
-classifiers: 
+categories: 
   - "iot communication"
 title: "Azure IoT Hub"
 linkTitle: "Azure IoT Hub"

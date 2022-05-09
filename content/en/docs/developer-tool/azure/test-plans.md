@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "azure"
-classifiers:
+categories:
   - "test planning"
   - "test execution"
 title: "Azure Test Plans"

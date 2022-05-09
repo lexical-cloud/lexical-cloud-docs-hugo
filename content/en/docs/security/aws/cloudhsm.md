@@ -1,7 +1,7 @@
 ---
 services: "security"
 providers: "aws"
-classifiers:
+categories:
   - "key management"
 title: "AWS CloudHSM"
 linkTitle: "AWS CloudHSM"

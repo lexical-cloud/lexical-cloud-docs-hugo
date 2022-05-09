@@ -1,7 +1,7 @@
 ---
 services: "network"
 providers: "azure"
-classifiers: 
+categories: 
   - "content delivery"
 title: "Azure CDN"
 linkTitle: "Azure CDN"

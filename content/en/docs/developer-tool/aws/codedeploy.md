@@ -1,7 +1,7 @@
 ---
 services: "developer-tool"
 providers: "aws"
-classifiers:
+categories:
   - "continuous deployment"
 title: "AWS CodeDeploy"
 linkTitle: "AWS CodeDeploy"

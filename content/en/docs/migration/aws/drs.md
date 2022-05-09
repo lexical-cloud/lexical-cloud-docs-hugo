@@ -1,7 +1,7 @@
 ---
 services: "migration"
 providers: "aws"
-classifiers:
+categories:
   - "disaster recovery"
 title: "AWS Elastic Disaster Recovery"
 linkTitle: "AWS Elastic Disaster Recovery"

@@ -1,7 +1,7 @@
 ---
 services: "network"
 providers: "aws"
-classifiers: 
+categories: 
   - "content delivery"
 title: "Amazon Cloudfront"
 linkTitle: "Amazon Cloudfront"

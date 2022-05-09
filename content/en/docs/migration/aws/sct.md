@@ -1,7 +1,7 @@
 ---
 services: "migration"
 providers: "aws"
-classifiers:
+categories:
   - "database migration"
   - "schema translator"
 title: "AWS Schema Conversion Tool"

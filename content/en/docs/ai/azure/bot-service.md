@@ -1,7 +1,7 @@
 ---
 services: "ai"
 providers: "azure"
-classifiers:
+categories:
   - "conversational interface"
   - "serverless"
 title: "Azure Bot Service"
