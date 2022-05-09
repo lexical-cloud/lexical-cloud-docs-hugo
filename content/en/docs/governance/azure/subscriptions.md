@@ -3,6 +3,6 @@ services: "governance"
 providers: "azure"
 classifiers:
   - "resource management"
-title: "Azure Management Groups"
-linkTitle: "Azure Management Groups"
+title: "Azure Subscriptions"
+linkTitle: "Azure Subscriptions"
 ---
