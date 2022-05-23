@@ -1,7 +1,7 @@
 
 baseURL = '/'
 languageCode = 'en-us'
-title = "Lexical.Cloud"
+title = "Lexical.cloud"
 themesDir = 'themes'
 theme = 'docsy'
 
