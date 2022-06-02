@@ -2,7 +2,7 @@
 services: "developer-tool"
 providers: "azure"
 categories:
-  - "continuous integation"
+  - "continuous integration"
   - "continuous deployment"
   - "continuous delivery"
 title: "Azure Pipelines"

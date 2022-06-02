@@ -3,7 +3,8 @@ services: "monitor"
 providers: "aws"
 categories:
   - "auditing"
-  - "configuration"
+  - "configuration management"
+  - "assessment"
 title: "AWS Config"
 linkTitle: "AWS Config"
 ---

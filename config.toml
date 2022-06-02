@@ -17,6 +17,7 @@ service = "services"
 category = "categories"
 feature = "features"
 label = "labels"
+domain = "domains"
 
 [params]
 copyright = "The Lexical.cloud Authors"
@@ -35,7 +36,7 @@ taxonomyCloud = ["providers", "services", "categories", "features", "labels"]
 taxonomyCloudTitle = ["Providers", "Services", "Categories", "Features", "Labels"]
 
 # set taxonomyPageHeader = [] to hide taxonomies on the page headers
-taxonomyPageHeader = ["providers", "services", "categories", "features", "labels"]
+taxonomyPageHeader = ["providers", "services", "categories", "domains", "features", "labels"]
 
 # User interface configuration
 [params.ui]

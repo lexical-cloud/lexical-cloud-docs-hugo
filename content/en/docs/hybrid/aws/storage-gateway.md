@@ -1,10 +1,11 @@
 ---
-services: "storage"
+services:
+  - "hybrid"
+  - "storage"
 providers: "aws"
 categories:
-  - "hybrid cloud storage"
-labels:
-  - "modernization"
+  - "on-premises"
+labels: "modernization"
 title: "AWS Storage Gateway"
 linkTitle: "AWS Storage Gateway"
 ---
