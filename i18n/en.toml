@@ -2,6 +2,12 @@
 [footer_all_rights_reserved]
 other = "| Distributed under CC BY-SA 4.0"
 
+# header metadata support text
+[metadata_entry_title_prefix]
+other = "Lexical.cloud's entry for "
+[metadata_entry_description]
+other = "Categorization of product according to Lexical.cloud's taxonomy" 
+
 # cloud providers
 [cloud_provider_aws]
 other = "Amazon Web Services"
