@@ -1,0 +1,56 @@
+{{/* We cache this partial for bigger sites and set the active class client side. */}}
+{{ $sidebarCacheLimit := cond (isset .Site.Params.ui "sidebar_cache_limit") .Site.Params.ui.sidebar_cache_limit 2000 -}}
+{{ $shouldDelayActive := ge (len .Site.Pages) $sidebarCacheLimit -}}
+<div id="td-sidebar-menu" class="td-sidebar__inner{{ if $shouldDelayActive }} d-none{{ end }}">
+  {{ if not .Site.Params.ui.sidebar_search_disable -}}
+  <form class="td-sidebar__search d-flex align-items-center">
+    {{ partial "search-input.html" . }}
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ml-3 fas fa-bars" type="button" data-toggle="collapse" data-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  {{ else -}}
+  <div id="content-mobile">
+  <form class="td-sidebar__search d-flex align-items-center">
+    {{ partial "search-input.html" . }}
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ml-3 fas fa-bars" type="button" data-toggle="collapse" data-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  </div>
+  <div id="content-desktop"></div>
+  {{ end -}}
+  <nav class="collapse td-sidebar-nav{{ if .Site.Params.ui.sidebar_menu_foldable }} foldable-nav{{ end }}" id="td-section-nav">
+    {{ if  (gt (len .Site.Home.Translations) 0) -}}
+    <div class="nav-item dropdown d-block d-lg-none">
+      {{ partial "navbar-lang-selector.html" . }}
+    </div>
+    {{ end -}}
+    {{ $navRoot := cond (and (ne .Params.toc_root true) (eq .Site.Home.Type "docs")) .Site.Home .FirstSection -}}
+    {{ $ulNr := 0 -}}
+    {{ $ulShow := cond (isset .Site.Params.ui "ul_show") .Site.Params.ui.ul_show 1 -}}
+    {{ $sidebarMenuTruncate := cond (isset .Site.Params.ui "sidebar_menu_truncate") .Site.Params.ui.sidebar_menu_truncate 50 -}}
+    <ul class="td-sidebar-nav__section pr-md-3 ul-{{ $ulNr }}">
+      <span class="align-left pl-0 td-sidebar-link td-sidebar-link__section tree-root" id="">Services</span>
+      {{ $sortedServices := (dict) }}
+      {{ range $serviceKey, $serviceValue := .Site.Taxonomies.services }}
+      {{   $sortedServices = $sortedServices | merge ( (dict (i18n (printf "cloud_service_%s" $serviceKey)) $serviceKey)) }}
+      {{ end }}
+      {{ range $serviceName, $serviceKey := $sortedServices }}
+         <a href="/services/{{ $serviceKey }}" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id="menu-service-{{ $serviceKey }}">
+           <span>{{ $serviceName }}</span>
+         </a>
+      {{ end }}
+    </ul>
+    <ul class="td-sidebar-nav__section pr-md-3 ul-{{ $ulNr }}">
+      <span class="align-left pl-0 td-sidebar-link td-sidebar-link__section tree-root" id="">Providers</span>
+      {{ $sortedProviders := (dict) }}
+      {{ range $providerKey, $providerValue := .Site.Taxonomies.providers }}
+      {{   $sortedProviders = $sortedProviders | merge ( (dict (i18n (printf "cloud_provider_%s" $providerKey)) $providerKey)) }}
+      {{ end }}
+      {{ range $providerName, $providerKey := $sortedProviders }}
+         <a href="/providers/{{ $providerKey }}" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id="menu-provider-{{ $providerKey }}">
+           <span>{{ $providerName }}</span>
+         </a>
+      {{ end }}
+    </ul>
+  </nav>
+</div>

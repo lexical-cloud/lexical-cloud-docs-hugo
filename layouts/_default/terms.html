@@ -1,0 +1,9 @@
+{{ define "main" }}
+ <div class="taxonomy taxonomy-terms-cloud">
+  <h3>{{ .Title }}</h3>
+  <div class="m-4">
+    {{ partial "taxonomy_terms_cloud.html" (dict "context" . "taxo" ( lower .Title ) ) }}
+  </div>
+</div>
+<a href="/" class="all-taxonomy-terms">{{ humanize ( T "ui_all" ) }}</a>
+{{ end }}

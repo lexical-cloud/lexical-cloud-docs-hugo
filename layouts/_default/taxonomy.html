@@ -1,0 +1,5 @@
+{{ define "main" }}
+    {{ $fullTitle := cond (in .Data.Singular (slice "provider" "service")) (i18n (printf "cloud_%s_%s" .Data.Singular .Title)) .Title }}
+    <h1><strong>{{ with .Data.Singular }}{{ . | humanize }}: {{ end }}</strong><span>{{ $fullTitle }}</span></h1>
+    {{ partial "list-results.html" . }}
+{{ end }}

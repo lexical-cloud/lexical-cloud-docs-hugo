@@ -1,0 +1,32 @@
+    <div class="p-0 container-fluid">
+      {{ $groupType := cond (eq .Data.Plural "providers") "service" "provider" }} 
+      {{ $groupFilter := cond (eq .Data.Plural "providers") ".Params.services" ".Params.providers" }} 
+      {{ $groupList :=  cond (eq .Data.Plural "providers") .Site.Taxonomies.services .Site.Taxonomies.providers }}
+      {{ range $groupKey, $groupValue := $groupList  }}
+        {{ $groupPages := union (where $.Pages $groupFilter $groupKey) (where $.Pages $groupFilter "intersect" (slice $groupKey)) }}
+        {{ if gt (len $groupPages) 0 }}
+          <h5 class="grouped-taxonomy-title">{{ (i18n (printf "cloud_%s_%s" $groupType $groupKey)) }}</h5>
+          <div class="row justify-content-left">
+          {{ range sort $groupPages "LinkTitle" }}  
+            {{ $manualLink := cond (isset .Params "manuallink") .Params.manualLink ( cond (isset .Params "manuallinkrelref") (relref . .Params.manualLinkRelref) .RelPermalink) }}
+            <div class="col-lg-4 col-sm-6 mb-4 d-flex">
+            <div class="card flex-fill border-primary rounded hover-shadow">
+            <div class="card-body">
+            <article class="article-teaser article-type-{{ with .Type }}{{ ( urlize . ) }}{{ end }}">
+              <h5 class="card-title"><a href="{{ $manualLink }}"{{ with .Params.manualLinkTitle }} title="{{ . }}"{{ end }}{{ with .Params.manualLinkTarget }} target="{{ . }}"{{ if eq . "_blank" }} rel="noopener"{{ end }}{{ end }}>{{- .LinkTitle -}}</a></h5>
+              <p>{{ .Description | markdownify }}</p>
+              <header class="article-meta">
+                {{ partial "taxonomy_terms_article_wrapper.html" . }}
+                {{ if (and (not .Params.hide_readingtime) (.Site.Params.ui.readingtime.enable)) }}
+                  {{ partial "reading-time.html" . }}
+                {{ end }}
+              </header>
+            </article>
+            </div>
+            </div>
+            </div>
+          {{ end }}
+          </div>
+        {{ end }}
+      {{ end }}
+    </div>

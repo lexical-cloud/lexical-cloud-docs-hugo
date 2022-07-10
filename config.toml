@@ -32,10 +32,10 @@ path_base_for_github_subdir = "content/"
 
 [params.taxonomy]
 # set taxonomyCloud = [] to hide taxonomy clouds
-taxonomyCloud = ["providers", "services", "categories", "features", "labels"]
+taxonomyCloud = ["domains", "categories", "features", "labels"]
 
 # If used, must have same length as taxonomyCloud
-taxonomyCloudTitle = ["Providers", "Services", "Categories", "Features", "Labels"]
+taxonomyCloudTitle = ["Domains", "Categories", "Features", "Labels"]
 
 # set taxonomyPageHeader = [] to hide taxonomies on the page headers
 taxonomyPageHeader = ["providers", "services", "categories", "domains", "features", "labels"]
@@ -43,7 +43,7 @@ taxonomyPageHeader = ["providers", "services", "categories", "domains", "feature
 # User interface configuration
 [params.ui]
 #  Set to true to disable breadcrumb navigation.
-breadcrumb_disable = false
+breadcrumb_disable = true
 # Set to true to disable the About link in the site footer
 footer_about_disable = false
 # Set to false if you don't want to display a logo (/assets/icons/logo.svg) in the top navbar

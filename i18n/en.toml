@@ -1,3 +1,48 @@
 # Footer text
 [footer_all_rights_reserved]
 other = "| Distributed under CC BY-SA 4.0"
+
+# cloud providers
+[cloud_provider_aws]
+other = "Amazon Web Services"
+[cloud_provider_azure]
+other = "Microsoft Azure"
+[cloud_provider_gcp]
+other = "Google Cloud"
+[cloud_provider_github]
+other = "GitHub"
+
+# cloud services
+[cloud_service_ai]
+other = "AI"
+[cloud_service_analytics]
+other = "Analytics"
+[cloud_service_compute]
+other = "Compute"
+[cloud_service_database]
+other = "Database"
+[cloud_service_developer-tool]
+other = "Developer Tool"
+[cloud_service_framework]
+other = "Framework"
+[cloud_service_governance]
+other = "Governance"
+[cloud_service_hybrid]
+other = "Hybrid"
+[cloud_service_identity]
+other = "Identity"
+[cloud_service_integration]
+other = "Integration"
+[cloud_service_iot]
+other = "IoT"
+[cloud_service_migration]
+other = "Migration"
+[cloud_service_monitor]
+other = "Monitor"
+[cloud_service_network]
+other = "Network"
+[cloud_service_security]
+other = "Security"
+[cloud_service_storage]
+other = "Storage"
+
