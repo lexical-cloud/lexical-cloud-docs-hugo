@@ -71,3 +71,9 @@ sidebar_search_disable = false
   
 
 disableKinds = [ "RSS" ]
+
+[params.drawio]
+enable = false
+
+[params.tabpane]
+enable = false
