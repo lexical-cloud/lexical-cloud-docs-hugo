@@ -1,0 +1,17 @@
+This repository builds on a submodule forked from Google's Docsy theme for Hugo found at https://github.com/google/docsy. The fork lives at https://github.com/lexical-cloud/docsy.
+
+In order to customize some of the docsy theme, certain files must be duplicated in this repo for customization. The following list is intended to document where that happens and fulfill the requirements of the Apache 2.0 license under which Docsy is distributed. The remainder of the work in this repo shall remain licensed seperately. Tracking these customizations is also useful in the event that the forked repo is later upgraded introducing incompatabilties to resolve.
+
+Files existing in both layouts/ and themes/docsy/layouts/ are the most likely candidates. These specific files are known customized duplicates:
+ - themes/docsy/layouts/_default/baseof.html -> layouts/_default/baseof.html
+ - themes/docsy/layouts/_default/taxonomy.html -> layouts/_default/taxonomy.html
+ - themes/docsy/layouts/_default/terms.html -> layouts/_default/terms.html
+ - themes/docsy/layouts/partials/head.html -> layouts/partials/head.html
+ - themes/docsy/layouts/partials/scripts.html -> layouts/partials/scripts.html
+ - themes/docsy/layouts/partials/section-index.html -> layouts/partials/section-index.html
+ - themes/docsy/layouts/partials/sidebar-tree.html -> layouts/partials/sidebar-tree.html
+ - themes/docsy/layouts/partials/taxonomy_terms_article.html -> layouts/partials/taxonomy_terms_article.html
+ - themes/docsy/layouts/_default/taxonomy.html -> layouts/partials/list-results.html
+
+The amount of customization in each file varies. Files sharing the same name with entirely new content are not mentioned above.
+
