@@ -12,6 +12,7 @@ Files existing in both layouts/ and themes/docsy/layouts/ are the most likely ca
  - themes/docsy/layouts/partials/sidebar-tree.html -> layouts/partials/sidebar-tree.html
  - themes/docsy/layouts/partials/taxonomy_terms_article.html -> layouts/partials/taxonomy_terms_article.html
  - themes/docsy/layouts/_default/taxonomy.html -> layouts/partials/list-results.html
+ - themes/docsy/layouts/docs/baseof.html -> layouts/docs/baseof.html
 
 The amount of customization in each file varies. Files sharing the same name with entirely new content are not mentioned above.
 
