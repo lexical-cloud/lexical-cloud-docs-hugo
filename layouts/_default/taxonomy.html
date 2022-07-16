@@ -1,5 +1,7 @@
 {{ define "main" }}
     {{ $fullTitle := cond (in .Data.Singular (slice "provider" "service")) (i18n (printf "cloud_%s_%s" .Data.Singular .Title)) .Title }}
-    <h1><strong>{{ with .Data.Singular }}{{ . | humanize }}: {{ end }}</strong><span>{{ $fullTitle }}</span></h1>
+    {{ $glossaryTermEntry := (index (split .RelPermalink "/") 2)  }}
+    {{ $glossaryTerm := .Site.GetPage (printf "/glossary/%s.md" $glossaryTermEntry) }}
+    <h1><strong>{{ with .Data.Singular }}{{ . | humanize }}: {{ end }}</strong><span>{{ $fullTitle }}</span>{{ if $glossaryTerm }}<a class="glossary-term" target="_blank" href="{{ $glossaryTerm.Params.definitionLink }}"></a>{{ end }}</h1>
     {{ partial "list-results.html" . }}
 {{ end }}
