@@ -2,6 +2,16 @@
 [post_create_issue]
 other = "Create docs issue"
 
+# Term related 
+[term_related]
+other = "Relates to"
+[term_example]
+other = "Example of"
+[term_domain_postfix]
+other = "of"
+[term_domain_unknown]
+other = "of Cloud Computing"
+
 # Footer text
 [footer_all_rights_reserved]
 other = "| Distributed under CC BY-SA 4.0"
