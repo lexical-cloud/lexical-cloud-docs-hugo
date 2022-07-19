@@ -7,6 +7,8 @@ other = "Create docs issue"
 other = "Relates to"
 [term_example]
 other = "Example of"
+[term_service]
+other = "Method of"
 [term_domain_postfix]
 other = "of"
 [term_domain_unknown]

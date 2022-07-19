@@ -9,8 +9,7 @@
     <h1><span>{{ $fullTitle }}</span>{{ if and $glossaryTerm $glossaryTerm.Params.definitionLink }}<a class="glossary-term" target="_blank" href="{{ $glossaryTerm.Params.definitionLink }}"></a>{{ end }}</h1>
     {{ if $glossaryTerm.Params.domains }}
       <div>{{ $taxonomyTypeTitle }} {{ (i18n "term_domain_postfix") }}
-      {{ range $domainIndex, $domainName := $glossaryTerm.Params.domains }}
-        {{ if gt $domainIndex 0 }},{{ end }}
+      {{ range $domainName := $glossaryTerm.Params.domains }}
           <a class="taxonomy-term" href="/domains/{{ $domainName }}/">
            <span class="taxonomy-label">{{ $domainName }}</span>
           </a>
@@ -18,6 +17,15 @@
       </div>
     {{ else }}
       <div> {{ $taxonomyTypeTitle }} {{ (i18n "term_domain_unknown") }}</div>
+    {{ end }}
+    {{ if $glossaryTerm.Params.services }}
+      <div>{{ (i18n "term_service") }}
+      {{ range $serviceName := $glossaryTerm.Params.services }}
+          <a class="taxonomy-term" href="/services/{{ $serviceName }}/">
+           <span class="taxonomy-label">{{ $serviceName }}</span>
+          </a>
+        {{ end }}
+      </div>
     {{ end }}
     {{ $glossaryTermIdWithSpace := replace $glossaryTermId "-" " " }}
     {{ $relatedTerms := where (where $glossaryTerm.Site.Pages "Section" "glossary") "Params.categories" "intersect" (slice $glossaryTermId $glossaryTermIdWithSpace ) }}
