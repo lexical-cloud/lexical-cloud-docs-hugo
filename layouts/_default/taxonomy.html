@@ -3,7 +3,7 @@
   {{ $taxonomyTypeTitle := $taxonomyType | humanize }}
   {{ $glossaryTermId := (index (split .RelPermalink "/") 2)  }}
   {{ $glossaryTerm := .Site.GetPage (printf "/glossary/%s.md" $glossaryTermId) }}
-  {{ $termTitle := cond (in (slice "provider" "service") $taxonomyType) (i18n (printf "cloud_%s_%s" $taxonomyType .Title)) (.Title | humanize) }}
+  {{ $termTitle := cond (in (slice "provider" "service") $taxonomyType) (i18n (printf "cloud_%s_%s" (urlize $taxonomyType) (urlize .Title))) (.Title | humanize) }}
   {{ $fullTitle := cond (not $glossaryTerm) $termTitle $glossaryTerm.Params.title }}
   {{ if $glossaryTerm }}
     <h1><span>{{ $fullTitle }}</span>{{ if and $glossaryTerm $glossaryTerm.Params.definitionLink }}<a class="glossary-term" target="_blank" href="{{ $glossaryTerm.Params.definitionLink }}"></a>{{ end }}</h1>
@@ -21,10 +21,19 @@
     {{ if $glossaryTerm.Params.services }}
       <div>{{ (i18n "term_service") }}
       {{ range $serviceName := $glossaryTerm.Params.services }}
-          <a class="taxonomy-term" href="/services/{{ $serviceName }}/">
-           <span class="taxonomy-label">{{ $serviceName }}</span>
-          </a>
-        {{ end }}
+        <a class="taxonomy-term" href="/services/{{ $serviceName }}/">
+          <span class="taxonomy-label">{{ $serviceName }}</span>
+        </a>
+      {{ end }}
+      </div>
+    {{ end }}
+    {{ if $glossaryTerm.Params.labels }}
+      <div>{{ (i18n "term_label") }}
+      {{ range $labelName := $glossaryTerm.Params.labels }}
+        <a class="taxonomy-term" href="#">
+          <span class="taxonomy-label">{{ $labelName }}</span>
+        </a>
+      {{ end }}
       </div>
     {{ end }}
     {{ $glossaryTermIdWithSpace := replace $glossaryTermId "-" " " }}

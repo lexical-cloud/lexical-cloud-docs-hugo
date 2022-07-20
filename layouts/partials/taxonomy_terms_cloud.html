@@ -10,7 +10,10 @@
       {{ end }}
       <ul class="taxonomy-terms">
         {{ range $taxonomy }}
-          <li><a class="taxonomy-term" href="{{ .Page.Permalink }}" data-taxonomy-term="{{ urlize .Page.Title }}"><span class="taxonomy-label">{{ .Page.Title }}</span><span class="taxonomy-count">{{ (len (where .Pages "Section" "!=" "glossary")) }}</span></a></li>
+          {{ $termUsageCount := (len (where .Pages "Section" "==" "docs")) }}
+          {{ if gt $termUsageCount 0 }}
+            <li><a class="taxonomy-term" href="{{ .Page.Permalink }}" data-taxonomy-term="{{ urlize .Page.Title }}"><span class="taxonomy-label">{{ .Page.Title }}</span><span class="taxonomy-count">{{ $termUsageCount }}</span></a></li>
+          {{ end }}
         {{ end }}
       </ul>
     </div>
