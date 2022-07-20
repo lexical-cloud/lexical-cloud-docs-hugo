@@ -9,6 +9,8 @@ other = "Relates to"
 other = "Example of"
 [term_service]
 other = "Method of"
+[term_label]
+other = "Also known as"
 [term_domain_postfix]
 other = "of"
 [term_domain_unknown]
@@ -43,8 +45,8 @@ other = "Analytics"
 other = "Compute"
 [cloud_service_database]
 other = "Database"
-[cloud_service_developer-tool]
-other = "Developer Tool"
+[cloud_service_developer-tools]
+other = "Developer Tools"
 [cloud_service_framework]
 other = "Framework"
 [cloud_service_governance]
