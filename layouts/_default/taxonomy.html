@@ -10,7 +10,7 @@
     {{ if $glossaryTerm.Params.domains }}
       <div>{{ $taxonomyTypeTitle }} {{ (i18n "term_domain_postfix") }}
       {{ range $domainName := $glossaryTerm.Params.domains }}
-          <a class="taxonomy-term" href="/domains/{{ $domainName }}/">
+          <a class="taxonomy-term" href="/domains/{{ (urlize $domainName) }}/">
            <span class="taxonomy-label">{{ $domainName }}</span>
           </a>
         {{ end }}
@@ -21,7 +21,7 @@
     {{ if $glossaryTerm.Params.services }}
       <div>{{ (i18n "term_service") }}
       {{ range $serviceName := $glossaryTerm.Params.services }}
-        <a class="taxonomy-term" href="/services/{{ $serviceName }}/">
+        <a class="taxonomy-term" href="/services/{{ (urlize $serviceName) }}/">
           <span class="taxonomy-label">{{ $serviceName }}</span>
         </a>
       {{ end }}
