@@ -48,7 +48,8 @@
         {{ i18n "term_example" }}
       {{ end }}
       {{ range $relatedTerms }}
-        <a class="taxonomy-term" href="/categories/{{ .File.TranslationBaseName }}/">
+        {{ $relatedTaxonomyType := cond (gt (.Site.Taxonomies.categories.Get .File.TranslationBaseName).Count 0) "categories" "features" }}
+        <a class="taxonomy-term" href="/{{ $relatedTaxonomyType }}/{{ .File.TranslationBaseName }}/">
           <span class="taxonomy-label">{{ .LinkTitle }}</span>
         </a>
       {{ end }}
