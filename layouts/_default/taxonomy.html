@@ -1,5 +1,63 @@
 {{ define "main" }}
-    {{ $fullTitle := cond (in .Data.Singular (slice "provider" "service")) (i18n (printf "cloud_%s_%s" .Data.Singular .Title)) .Title }}
-    <h1><strong>{{ with .Data.Singular }}{{ . | humanize }}: {{ end }}</strong><span>{{ $fullTitle }}</span></h1>
-    {{ partial "list-results.html" . }}
+  {{ $taxonomyType := .Data.Singular }}
+  {{ $taxonomyTypeTitle := $taxonomyType | humanize }}
+  {{ $glossaryTermId := (index (split .RelPermalink "/") 2)  }}
+  {{ $glossaryTerm := .Site.GetPage (printf "/glossary/%s.md" $glossaryTermId) }}
+  {{ $termTitle := cond (in (slice "provider" "service") $taxonomyType) (i18n (printf "cloud_%s_%s" (urlize $taxonomyType) (urlize .Title))) (.Title | humanize) }}
+  {{ $fullTitle := cond (not $glossaryTerm) $termTitle $glossaryTerm.Params.title }}
+  {{ if $glossaryTerm }}
+    <h1><span>{{ $fullTitle }}</span>{{ if and $glossaryTerm $glossaryTerm.Params.definitionLink }}<a class="glossary-term" target="_blank" href="{{ $glossaryTerm.Params.definitionLink }}"></a>{{ end }}</h1>
+    {{ if $glossaryTerm.Params.domains }}
+      <div>{{ $taxonomyTypeTitle }} {{ (i18n "term_domain_postfix") }}
+      {{ range $domainName := $glossaryTerm.Params.domains }}
+          <a class="taxonomy-term" href="/domains/{{ (urlize $domainName) }}/">
+           <span class="taxonomy-label">{{ $domainName }}</span>
+          </a>
+        {{ end }}
+      </div>
+    {{ else }}
+      <div> {{ $taxonomyTypeTitle }} {{ (i18n "term_domain_unknown") }}</div>
+    {{ end }}
+    {{ if $glossaryTerm.Params.services }}
+      <div>{{ (i18n "term_service") }}
+      {{ range $serviceName := $glossaryTerm.Params.services }}
+        <a class="taxonomy-term" href="/services/{{ (urlize $serviceName) }}/">
+          <span class="taxonomy-label">{{ $serviceName }}</span>
+        </a>
+      {{ end }}
+      </div>
+    {{ end }}
+    {{ if $glossaryTerm.Params.labels }}
+      <div>{{ (i18n "term_label") }}
+      {{ range $labelName := $glossaryTerm.Params.labels }}
+        <a class="taxonomy-term" href="#">
+          <span class="taxonomy-label">{{ $labelName }}</span>
+        </a>
+      {{ end }}
+      </div>
+    {{ end }}
+    {{ $glossaryTermIdWithSpace := replace $glossaryTermId "-" " " }}
+    {{ $relatedTerms := where (where $glossaryTerm.Site.Pages "Section" "glossary") "Params.categories" "intersect" (slice $glossaryTermId $glossaryTermIdWithSpace ) }}
+    {{ $relatedTerms2 := where (where $glossaryTerm.Site.Pages "Section" "glossary") "File.TranslationBaseName" "in" (union (slice) (apply $glossaryTerm.Params.Categories "urlize" "." )) }}
+    {{ if or $relatedTerms $relatedTerms2 }}
+      {{ $relatedTerms = union $relatedTerms $relatedTerms2 }}
+      <div>{{ cond (eq $relatedTerms2 nil) (i18n "terms_example") (i18n "terms_related") }}
+      {{ if not $relatedTerms2 }}
+        {{ i18n "term_related" }}
+      {{ else }}
+        {{ i18n "term_example" }}
+      {{ end }}
+      {{ range $relatedTerms }}
+        <a class="taxonomy-term" href="/categories/{{ .File.TranslationBaseName }}/">
+          <span class="taxonomy-label">{{ .LinkTitle }}</span>
+        </a>
+      {{ end }}
+      </div>
+    {{ end }}
+  {{ else }}
+    <h1><span>{{ $fullTitle }}</span></h1>
+    <div>{{ $taxonomyTypeTitle }} of Cloud Computing</div>
+  {{ end }}
+  <br>
+  {{ partial "list-results.html" . }}
 {{ end }}

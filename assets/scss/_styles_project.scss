@@ -57,3 +57,16 @@
     vertical-align: top;
 
 }
+
+a.glossary-term:before {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Font Awesome 5 Free";
+  content: "\f059";
+  padding-left: 0.5em;
+  font-size: 50%;
+  vertical-align: top;
+}
