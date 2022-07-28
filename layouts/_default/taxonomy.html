@@ -16,7 +16,7 @@
         {{ end }}
       </div>
     {{ else }}
-      <div> {{ $taxonomyTypeTitle }} {{ (i18n "term_domain_unknown") }}</div>
+      <div>{{ $taxonomyTypeTitle }} {{ (i18n "term_domain_unknown") }}</div>
     {{ end }}
     {{ if $glossaryTerm.Params.services }}
       <div>{{ (i18n "term_service") }}
@@ -41,12 +41,7 @@
     {{ $relatedTerms2 := where (where $glossaryTerm.Site.Pages "Section" "glossary") "File.TranslationBaseName" "in" (union (slice) (apply $glossaryTerm.Params.Categories "urlize" "." )) }}
     {{ if or $relatedTerms $relatedTerms2 }}
       {{ $relatedTerms = union $relatedTerms $relatedTerms2 }}
-      <div>{{ cond (eq $relatedTerms2 nil) (i18n "terms_example") (i18n "terms_related") }}
-      {{ if not $relatedTerms2 }}
-        {{ i18n "term_related" }}
-      {{ else }}
-        {{ i18n "term_example" }}
-      {{ end }}
+      <div>{{ cond (not $relatedTerms2) (i18n "term_related") (i18n "term_example") }}
       {{ range $relatedTerms }}
         {{ $relatedTaxonomyType := cond (gt (.Site.Taxonomies.categories.Get .File.TranslationBaseName).Count 0) "categories" "features" }}
         <a class="taxonomy-term" href="/{{ $relatedTaxonomyType }}/{{ .File.TranslationBaseName }}/">
