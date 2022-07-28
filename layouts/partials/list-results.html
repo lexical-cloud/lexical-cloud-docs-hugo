@@ -1,11 +1,12 @@
     <div class="p-0 container-fluid">
-      {{ $groupType := cond (eq .Data.Plural "providers") "service" "provider" }} 
       {{ $groupFilter := cond (eq .Data.Plural "providers") ".Params.services" ".Params.providers" }} 
       {{ $groupList :=  cond (eq .Data.Plural "providers") .Site.Taxonomies.services .Site.Taxonomies.providers }}
       {{ range $groupKey, $groupValue := $groupList  }}
-        {{ $groupPages := union (where $.Pages $groupFilter $groupKey) (where $.Pages $groupFilter "intersect" (slice $groupKey)) }}
+        {{ $glossaryPage := .Page.GetPage (printf "/glossary/%s.md" $groupKey) }}
+        {{ $groupKeyName := $glossaryPage.Param "linkTitle" }}
+        {{ $groupPages := where $.Pages $groupFilter "intersect" (slice $groupKeyName ) }}
         {{ if gt (len $groupPages) 0 }}
-          <h5 class="grouped-taxonomy-title">{{ (i18n (printf "cloud_%s_%s" $groupType $groupKey)) }}</h5>
+          <h5 class="grouped-taxonomy-title">{{ $glossaryPage.Params.title }}</h5>
           <div class="row justify-content-left">
           {{ range sort $groupPages "LinkTitle" }}  
             {{ $manualLink := cond (isset .Params "manuallink") .Params.manualLink ( cond (isset .Params "manuallinkrelref") (relref . .Params.manualLinkRelref) .RelPermalink) }}
