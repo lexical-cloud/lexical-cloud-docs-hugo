@@ -16,7 +16,7 @@ defaultContentLanguageInSubdir = false
 [[menu.main]]
 name = "Data Model"
 weight = 50
-url = "/blog/data-model"
+url = "/pages/data-model"
 pre = "<i class='fas fa-sitemap'></i>"
 
 [params.mermaid]
@@ -27,6 +27,7 @@ theme = "neutral"
 [taxonomies]
 provider = "providers"
 service = "services"
+domain = "domains"
 category = "categories"
 feature = "features"
 label = "labels"
