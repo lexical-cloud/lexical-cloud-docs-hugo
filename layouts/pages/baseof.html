@@ -13,12 +13,15 @@
           <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
             {{ partial "sidebar.html" . }}
           </aside>
-          <aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none">
-            {{ partial "page-meta-links.html" . }}
-            {{ partial "toc.html" . }}
+          <aside class="collapse d-xl-block col-md-3 col-xl-2 td-sidebar-toc2 d-print-none" id="td-section-nav2">
+            <div class="d-none d-xl-block mt-3">
+              {{ partial "page-meta-links.html" . }}
+              <br />
+              {{ partial "toc.html" . }}
+            </div>
             {{ partial "taxonomy_terms_clouds.html" . }}
           </aside>
-          <main class="col-12 col-md-9 col-xl-8 pl-md-5 pr-md-4" role="main">
+          <main class="collapse show d-xl-block col-12 col-md-8 col-xl-8 pl-md-5" role="main" id="td-section-nav3">
             {{ with .CurrentSection.OutputFormats.Get "rss" -}}
             <a class="btn btn-lg -bg-orange td-rss-button d-none d-lg-block" href="{{ .Permalink | safeURL }}" target="_blank">
               RSS <i class="fa fa-rss ml-2 "></i>
