@@ -13,10 +13,21 @@ contentDir = "content/en"
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 
+[[menu.main]]
+name = "Data Model"
+weight = 50
+url = "/pages/data-model"
+pre = "<i class='fas fa-sitemap'></i>"
+
+[params.mermaid]
+enable = true
+theme = "neutral"
+
 # You can add your own taxonomies
 [taxonomies]
 provider = "providers"
 service = "services"
+domain = "domains"
 category = "categories"
 feature = "features"
 label = "labels"
