@@ -19,6 +19,12 @@ weight = 50
 url = "/pages/data-model"
 pre = "<i class='fas fa-sitemap'></i>"
 
+[[menu.main]]
+name = "Blog"
+weight = 20
+url = "/blog"
+pre = "<i class='fas fa-rss'></i>"
+
 [params.mermaid]
 enable = true
 theme = "neutral"
