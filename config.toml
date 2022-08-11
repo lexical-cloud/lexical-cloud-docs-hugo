@@ -19,6 +19,12 @@ weight = 50
 url = "/pages/data-model"
 pre = "<i class='fas fa-sitemap'></i>"
 
+[[menu.main]]
+name = "API Design"
+weight = 10
+url = "/pages/api-design"
+pre = "<i class='fas fa-code'></i>"
+
 [params.mermaid]
 enable = true
 theme = "neutral"

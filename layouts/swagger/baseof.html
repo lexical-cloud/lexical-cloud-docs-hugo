@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="{{ .Site.Language.Lang }}" class="no-js">
+  <head>
+    {{ partial "head.html" . }}
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ "/css/swagger-ui.css" | relURL }}">
+  </head>
+  <body class="td-{{ .Kind }}">
+    <header>
+      {{ partial "navbar.html" . }}
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            {{ partial "sidebar.html" . }}
+          </aside>
+          <aside class="collapse d-xl-block col-md-3 col-xl-2 td-sidebar-toc2 d-print-none" id="td-section-nav2">
+            <div class="d-none d-xl-block mt-3">
+              {{ partial "page-meta-links.html" . }}
+              {{ partial "toc.html" . }}
+            </div>
+            {{ partial "taxonomy_terms_clouds.html" . }}
+          </aside>
+          <main class="collapse show d-xl-block col-12 col-md-8 col-xl-8 pl-md-5" role="main" id="td-section-nav3">
+            {{ if not .Site.Params.ui.breadcrumb_disable }}{{ partial "breadcrumb.html" . }}{{ end }}
+            <script src="{{ "/js/swagger-ui-bundle.js" | relURL }}"></script>
+            <script src="{{ "/js/swagger-ui-standalone-preset.js" | relURL }}"></script>
+            {{ block "main" . }}{{ end }}
+          </main>
+        </div>
+      </div>
+      {{ partial "footer.html" . }}
+    </div>
+    {{ partial "scripts.html" . }}
+  </body>
+</html>
