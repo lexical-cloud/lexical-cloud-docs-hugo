@@ -15,6 +15,21 @@
   margin-top: 0px;
 }
 
+.grouped-model-title {
+  width: 100%;
+  clear: both;
+  font-size: 0.8rem;
+
+  display: inline-block;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $primary; 
+  //background-color: $border-color;
+  //border-bottom: 1px $primary solid;
+  padding: 0.375rem;
+}
+
 .border-primary {
   border-color: $border-color !important;
 }

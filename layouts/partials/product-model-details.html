@@ -1,0 +1,13 @@
+{{ $resultDirPath :=  (printf "/%s%s/" .File.Dir .File.TranslationBaseName) }}
+{{ if os.FileExists $resultDirPath  }}
+{{   range os.ReadDir (printf "/content/en%s" $resultDirPath) }}
+{{     $resultModelPagePath := (printf "%s%s" $resultDirPath .Name )  }}
+{{     $resultModelPage := $.GetPage $resultModelPagePath }}
+{{     with $resultModelPage }}
+<div class="taxonomy taxonomy-terms-article taxo-providers mb-2 mt-2">
+  <h5 class="grouped-model-title"><i class="fa fa-bookmark "></i> {{.LinkTitle }}</h5>
+  {{ partial "taxonomy_terms_article_wrapper.html" . }}
+</div>
+{{     end }}
+{{   end }}
+{{ end }}
