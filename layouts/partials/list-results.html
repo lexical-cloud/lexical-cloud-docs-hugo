@@ -4,8 +4,8 @@
       {{ range $groupKey, $groupValue := $groupList  }}
         {{ $glossaryPage := .Page.GetPage (printf "/glossary/%s.md" $groupKey) }}
         {{ $groupKeyName := $glossaryPage.Param "linkTitle" }}
-        {{ $groupPages := where (where $.Pages ".Params.productHierarchy" nil) $groupFilter "intersect" (slice $groupKeyName ) }}
-        {{ range where $.Pages ".Params.productHierarchy" "!=" nil  }}
+        {{ $groupPages := where (where $.Pages ".Params.productHierarchyTier" nil) $groupFilter "intersect" (slice $groupKeyName ) }}
+        {{ range where $.Pages ".Params.productHierarchyTier" "!=" nil  }}
         {{   if in .RelPermalink (printf "/%s/" (urlize $groupKeyName)) }}
         {{     $groupPages = union $groupPages (slice (.GetPage (replaceRE "/$" ".md" .File.Dir)))  }}
         {{   end }}
