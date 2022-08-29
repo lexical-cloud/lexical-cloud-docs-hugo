@@ -1,4 +1,4 @@
-{{ $resultDirPath :=  (printf "/%s%s/models/" .File.Dir .File.TranslationBaseName) }}
+{{ $resultDirPath :=  (printf "/%s%s/components/" .File.Dir .File.TranslationBaseName) }}
 {{ if os.FileExists $resultDirPath  }}
 {{   range where (os.ReadDir (printf "/content/en%s" $resultDirPath)) "IsDir" false }}
 {{     $resultModelPagePath := (printf "%s%s" $resultDirPath .Name )  }}
@@ -8,6 +8,7 @@
 <div class="taxonomy taxonomy-terms-article taxo-providers mb-2 mt-2">
   {{ partial "taxonomy_terms_article_wrapper.html" . }}
 </div>
+{{ partial "product-model-details.html" . }}
 {{     end }}
 {{   end }}
 {{ end }}
