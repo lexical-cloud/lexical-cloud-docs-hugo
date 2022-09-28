@@ -23,7 +23,7 @@
   display: inline-block;
   width: 100%;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 500;
   color: $primary; 
   //background-color: $border-color;
   //border-bottom: 1px $primary solid;
@@ -84,6 +84,10 @@ a.glossary-term:before {
   padding-left: 0.5em;
   font-size: 50%;
   vertical-align: top;
+}
+
+.taxonomy-terms-article {
+  margin-left: 5px;
 }
 
 pre.mermaid svg {
