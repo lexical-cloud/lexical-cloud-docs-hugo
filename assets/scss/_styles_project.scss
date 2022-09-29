@@ -102,6 +102,9 @@ div.swagger-ui pre.version {
   background-color: inherit !important;
 }
 
+.dataframe {
+  overflow-y:auto;
+}
 .dataframe td {
   text-align: right;
   padding: 10px;
