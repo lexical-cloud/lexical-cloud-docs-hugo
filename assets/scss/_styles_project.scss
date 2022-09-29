@@ -101,3 +101,20 @@ div.swagger-ui button.try-out__btn {
 div.swagger-ui pre.version {
   background-color: inherit !important;
 }
+
+.dataframe td {
+  text-align: right;
+  padding: 10px;
+}
+
+.dataframe thead th {
+  color: $primary;
+  border-bottom:2px solid $primary;
+  vertical-align: middle;
+  text-align: center;
+  padding: 10px;
+}
+
+.dataframe tr:nth-of-type(even) { 
+  background: $border-color; 
+}
