@@ -14,16 +14,22 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 
 [[menu.main]]
-name = "Data Model"
-weight = 50
+name = "Model"
+weight = 10
 url = "/pages/data-model"
 pre = "<i class='fas fa-sitemap'></i>"
 
 [[menu.main]]
-name = "API Design"
-weight = 10
+name = "API"
+weight = 30
 url = "/pages/api-design"
 pre = "<i class='fas fa-code'></i>"
+
+[[menu.main]]
+name = "Analysis"
+weight = 50
+url = "/blog/analysis"
+pre = "<i class='fas fa-search'></i>"
 
 [params.mermaid]
 enable = true
