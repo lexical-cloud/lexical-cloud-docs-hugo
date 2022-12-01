@@ -31,6 +31,12 @@ weight = 50
 url = "/blog/analysis"
 pre = "<i class='fas fa-search'></i>"
 
+[[menu.main]]
+name = "About"
+weight = 70
+url = "/pages/project"
+pre = "<i class='fas fa-question'></i>"
+
 [params.mermaid]
 enable = true
 theme = "neutral"
