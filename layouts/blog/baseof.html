@@ -27,6 +27,22 @@
               RSS <i class="fa fa-rss ml-2 "></i>
             </a>
             {{ end -}}
+            {{ if (hasPrefix .File.Path "blog/decisions/") -}}
+               {{ $p := cond .IsPage .Parent . -}}
+               <nav aria-label="breadcrumb" class="td-breadcrumbs">
+                 <ol class="breadcrumb">
+                   <li class="breadcrumb-item"><a href="/pages/project">About</a></li>
+                   {{ if not (eq .File.Path "blog/decisions/_index.md") -}}
+                   <li class="breadcrumb-item">
+                     <a href="{{ substr (replace $p.File.Dir "blog/decisions/" "/pages/project/#") 0 -1 }}">{{ $p.Title }}</a>
+                   </li>
+                   {{ end -}}
+                   <li class="breadcrumb-item {{ cond .IsPage "" "active" }}">
+                     {{ if .IsPage }}<a href="/{{ $p.File.Dir }}">Decision Log</a>{{ else }}<span>Decision Log</span>{{ end }}
+                   </li>
+                </ol>
+              </nav>
+            {{ end -}}
             {{ block "main" . }}{{ end }}
           </main>
         </div>
