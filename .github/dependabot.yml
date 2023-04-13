@@ -1,8 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "gitsubmodule"
+    directory: "/"
     schedule:
       interval: "daily"
       time: "14:00"
       timezone: "US/Pacific"
-    directory: "/"
+    allow:
+      - dependency-name: "content"
