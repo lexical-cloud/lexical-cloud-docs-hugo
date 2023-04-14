@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '14.17.5'
           cache: 'npm'
-          cache-dependency-path: 'themes/docsy/package-lock.json'
+          cache-dependency-path: '**/package-lock.json'
 
       - run: npm ci
       - run: hugo --minify
