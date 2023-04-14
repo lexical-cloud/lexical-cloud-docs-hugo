@@ -17,13 +17,15 @@ jobs:
         with:
           hugo-version: '0.89.4'
           extended: true
-
+      - run pwd
+      - run ls
+      - run ls themes/docsy
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '14.17.5'
           cache: 'npm'
-          #cache-dependency-path: 'themes/docsy/package-lock.json'
+          cache-dependency-path: 'themes/docsy/package-lock.json'
 
       - run: npm ci
       - run: hugo --minify
