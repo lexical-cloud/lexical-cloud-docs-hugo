@@ -27,6 +27,8 @@ jobs:
           # cache-dependency-path: 'themes/docsy/package-lock.json'
 
       - run: |
+            cp ci/package-lock.json themes/docsy/
             cd themes/docsy
             npm ci
+
       - run: hugo --minify
