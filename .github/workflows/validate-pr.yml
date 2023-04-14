@@ -15,7 +15,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.89.4'
+          hugo-version: '0.96.0'
           extended: true
 
       # temporary hack
@@ -32,9 +32,6 @@ jobs:
 
       # includes temporary hack for postcss and autoprefixer
       - run: |
-            npm install -D postcss@"8.4.13"
-            npm install -D postcss-cli@"9.1.0"
-            npm install -D autoprefixer@"10.4.7"
             cd themes/docsy
             npm ci
 
