@@ -17,9 +17,11 @@ jobs:
         with:
           hugo-version: '0.89.4'
           extended: true
-      - run pwd
-      - run ls
-      - run ls themes/docsy
+
+      - run: pwd
+      - run: ls
+      - run: ls themes/docsy
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
