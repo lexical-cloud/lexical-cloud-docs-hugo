@@ -18,6 +18,9 @@ jobs:
           hugo-version: '0.89.4'
           extended: true
 
+      - run: |
+            cd themes/docsy
+            git checkout feature/add-package-lock
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -30,7 +33,6 @@ jobs:
             npm install -D postcss@"8.4.13"
             npm install -D postcss-cli@"9.1.0"
             npm install -D autoprefixer@"10.4.7"
-            cp ci/package-lock.json themes/docsy/
             cd themes/docsy
             npm ci
 
