@@ -21,7 +21,7 @@ jobs:
       # temporary hack
       - run: |
             cd themes/docsy
-            git checkout feature/add-package-lock
+            git checkout feature/add-package-lock2
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -32,9 +32,6 @@ jobs:
 
       # includes temporary hack for postcss and autoprefixer
       - run: |
-            npm install -D postcss@"8.4.13"
-            npm install -D postcss-cli@"9.1.0"
-            npm install -D autoprefixer@"10.4.7"
             cd themes/docsy
             npm ci
 
