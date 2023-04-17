@@ -37,5 +37,22 @@ jobs:
           cd themes/docsy
           npm ci
 
+      - name: Setup public submodule to capture changes
+        run: |
+          cd public
+          git checkout main
+          git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          cd ..
+          rm -rf public/*
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+
       - name: Generate static site with hugo
-        run: hugo --minify
+        run: |
+          hugo --minify
+  
+      - name: Preview changes to public submodule
+        run: |
+          cd public
+          git status
