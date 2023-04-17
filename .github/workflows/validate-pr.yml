@@ -41,7 +41,9 @@ jobs:
         run: |
           cd public
           git checkout main
+          git pull origin main
           git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
           cd ..
           rm -rf public/*
         env:
