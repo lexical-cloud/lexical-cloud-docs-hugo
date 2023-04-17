@@ -31,8 +31,8 @@ jobs:
           node-version: '14.17.5'
           cache: 'npm'
           cache-dependency-path: |
-            'package-lock.json'
-            'themes/docsy/package-lock.json'
+            package-lock.json
+            themes/docsy/package-lock.json
 
       - name: Install project dependencies
         run: |
