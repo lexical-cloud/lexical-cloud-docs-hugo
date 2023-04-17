@@ -12,6 +12,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: true
+          token: ${{ secrets.LC_GP_CI }}
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
