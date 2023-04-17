@@ -32,9 +32,7 @@ jobs:
 
       # includes temporary hack for postcss and autoprefixer
       - run: |
-            npm install -D postcss@"8.4.13"
-            npm install -D postcss-cli@"9.1.0"
-            npm install -D autoprefixer@"10.4.7"
+            npm ci
             cd themes/docsy
             npm ci
 
