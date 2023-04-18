@@ -60,7 +60,7 @@ jobs:
           cd public
           git status
 
-      - name: Save static site for PR merge
+      - name: Save static site for future PR merge
         run: |
           cd public
           git config user.name github-actions
