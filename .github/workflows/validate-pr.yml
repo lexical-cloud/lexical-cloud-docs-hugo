@@ -74,12 +74,13 @@ jobs:
 
       - name: Stage static site for preview
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
           git branch preview/hugo-pr-$PR_NUM-$RUN_NUM
           git checkout preview/hugo-pr-$PR_NUM-$RUN_NUM
           mkdir docs
           cp -r public/* docs/
+          git status
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add .
           git commit -m "preview of generated static site in pr $PR_NUM run $RUN_NUM"
           git push origin --force preview/hugo-pr-$PR_NUM-$RUN_NUM:preview
