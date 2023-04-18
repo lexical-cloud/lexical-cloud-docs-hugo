@@ -72,17 +72,32 @@ jobs:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
 
+  preview:
+    needs: validate
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Checkout project with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Stage static site for preview
         run: |
+          cd public
+          git checkout deploy/hugo-pr-$PR_NUM
+          cd ..
           git branch preview/hugo-pr-$PR_NUM-$RUN_NUM
           git checkout preview/hugo-pr-$PR_NUM-$RUN_NUM
           mkdir docs
           cp -r public/* docs/
-          git remote -v
-          git status
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
+          git status
           git commit -m "preview of generated static site in pr $PR_NUM run $RUN_NUM"
           git push origin --force preview/hugo-pr-$PR_NUM-$RUN_NUM:preview
         env:
