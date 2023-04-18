@@ -2,7 +2,7 @@ name: validate pr
 on: pull_request
 
 jobs:
-  validate:
+  build:
     runs-on: ubuntu-22.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
@@ -73,7 +73,7 @@ jobs:
           RUN_NUM: ${{ github.run_number }}
 
   preview:
-    needs: validate
+    needs: build
     runs-on: ubuntu-22.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
@@ -95,6 +95,7 @@ jobs:
           mkdir docs
           cp -r public/* docs/
           touch docs/.nojekyll
+          echo 'staging.lexical.cloud' > docs/CNAME
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
