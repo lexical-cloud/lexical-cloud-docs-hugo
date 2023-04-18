@@ -105,10 +105,10 @@ jobs:
 
       - name: Exit if static site changed since creation
         if: |
-          needs.validate.outputs.static-site-sha == '' ||
-          needs.validate.outputs.static-site-sha != steps.checkout-static-site.outputs.commit-sha
+          needs.build.outputs.static-site-sha == '' ||
+          needs.build.outputs.static-site-sha != steps.checkout-static-site.outputs.commit-sha
         run: |
-          echo "mismatch: ${{needs.validate.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.commit-sha}}"
+          echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.commit-sha}}"
           exit 1
 
       - name: Stage static site for preview
