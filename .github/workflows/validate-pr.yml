@@ -1,9 +1,6 @@
 name: validate pr
 on: pull_request
 
-permissions:
-  pull-requests: write
-
 jobs:
   validate:
     runs-on: ubuntu-22.04
