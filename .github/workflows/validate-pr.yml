@@ -107,7 +107,9 @@ jobs:
         if: |
           needs.validate.outputs.static-site-sha == '' ||
           needs.validate.outputs.static-site-sha != steps.checkout-static-site.outputs.commit-sha
-        run: exit 1
+        run: |
+          echo "mismatch: ${{needs.validate.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.commit-sha}}"
+          exit 1
 
       - name: Stage static site for preview
         run: |
