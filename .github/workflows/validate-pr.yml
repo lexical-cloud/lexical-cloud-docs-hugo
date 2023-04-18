@@ -1,11 +1,17 @@
 name: validate pr
 on: pull_request
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
     runs-on: ubuntu-22.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
+    outputs:
+      static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
     steps:
       - name: Checkout project with submodules
         uses: actions/checkout@v3
@@ -61,6 +67,7 @@ jobs:
           git status
 
       - name: Save static site for future PR merge
+        id: save-static-site
         run: |
           cd public
           git config user.name 'github-actions[bot]'
@@ -68,6 +75,7 @@ jobs:
           git add .
           git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
           git push origin --force deploy/hugo-pr-$PR_NUM-$RUN_NUM:deploy/hugo-pr-$PR_NUM
+          echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
@@ -85,11 +93,24 @@ jobs:
           submodules: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Stage static site for preview
+      - name: Checkout static site for preview
+        id: checkout-static-site
         run: |
           cd public
           git checkout deploy/hugo-pr-$PR_NUM
-          cd ..
+          echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+
+      - name: Exit if static site changed since creation
+        if: |
+          needs.validate.outputs.static-site-sha == "" ||
+          needs.validate.outputs.static-site-sha != steps.checkout-static-site.outputs.commit-sha
+        run: exit 1
+
+      - name: Stage static site for preview
+        run: |
           git branch preview/hugo-pr-$PR_NUM-$RUN_NUM
           git checkout preview/hugo-pr-$PR_NUM-$RUN_NUM
           mkdir docs
