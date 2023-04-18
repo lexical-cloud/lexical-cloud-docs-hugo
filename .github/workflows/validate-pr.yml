@@ -78,6 +78,7 @@ jobs:
           git checkout preview/hugo-pr-$PR_NUM-$RUN_NUM
           mkdir docs
           cp -r public/* docs/
+          git remote -v
           git status
           git config user.name github-actions
           git config user.email github-actions@github.com
