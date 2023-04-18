@@ -105,7 +105,7 @@ jobs:
 
       - name: Exit if static site changed since creation
         if: |
-          needs.validate.outputs.static-site-sha == "" ||
+          needs.validate.outputs.static-site-sha == '' ||
           needs.validate.outputs.static-site-sha != steps.checkout-static-site.outputs.commit-sha
         run: exit 1
 
