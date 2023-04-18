@@ -60,7 +60,7 @@ jobs:
           cd public
           git status
 
-      - name: Save branch in public submodule for PR merge
+      - name: Save static site for PR merge
         run: |
           cd public
           git config user.name github-actions
@@ -68,6 +68,21 @@ jobs:
           git add .
           git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
           git push origin --force deploy/hugo-pr-$PR_NUM-$RUN_NUM:deploy/hugo-pr-$PR_NUM
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+
+      - name: Stage static site for preview
+        run: |
+          git branch preview/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout preview/hugo-pr-$PR_NUM-$RUN_NUM
+          mkdir docs
+          cp public/* docs/
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "preview of generated static site in pr $PR_NUM run $RUN_NUM"
+          git push origin --force preview/hugo-pr-$PR_NUM-$RUN_NUM:preview
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
