@@ -72,7 +72,7 @@ jobs:
 
       - name: Save static site for future PR merge
         id: save-static-site
-        if: steps.preview-public-changes.outputs.diff_count != '0'
+        if: steps.preview-public-changes.outputs.diff-count != '0'
         run: |
           cd public
           git config user.name 'github-actions[bot]'
