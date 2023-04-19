@@ -94,7 +94,7 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
-          BRANCH_NAME: ${{ github.ref }}
+          BRANCH_NAME: ${{ github.ref_name }}
 
   preview:
     needs: build
