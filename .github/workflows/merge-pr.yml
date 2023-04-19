@@ -1,3 +1,4 @@
+name: merge pr
 on:
   pull_request:
     branches:
