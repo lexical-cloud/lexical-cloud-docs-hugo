@@ -10,7 +10,7 @@ defaults:
 
 jobs:
   build:
-    if: startsWith($GITHUB_REF_NAME,'dependabot/submodules/public-') == false
+    if: startsWith(github.ref_name,'dependabot/submodules/public-') == false
     runs-on: ubuntu-22.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
