@@ -1,5 +1,8 @@
 name: validate pr
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - 'main'
 
 defaults:
   run:
@@ -7,6 +10,7 @@ defaults:
 
 jobs:
   build:
+    if: startsWith($GITHUB_REF_NAME,'dependabot/submodules/public-') == false
     runs-on: ubuntu-22.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
