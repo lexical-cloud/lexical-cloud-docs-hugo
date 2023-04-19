@@ -50,6 +50,7 @@ jobs:
 
       - name: Setup public submodule to capture changes
         run: |
+          git checkout $BRANCH_NAME
           cd public
           git checkout main
           git pull origin main
@@ -60,6 +61,7 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
+          BRANCH_NAME: ${{ github.head_ref }}
 
       - name: Generate static site with hugo
         run: |
@@ -88,6 +90,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout 
           git add public
           git commit -m "generated static site in public submodule during pr $PR_NUM run $RUN_NUM"
           git push origin $BRANCH_NAME
