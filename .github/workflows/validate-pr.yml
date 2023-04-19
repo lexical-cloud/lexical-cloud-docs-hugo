@@ -50,7 +50,6 @@ jobs:
       - name: Setup public submodule to capture changes
         run: |
           cd public
-          git checkout main
           git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
           git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
           cd ..
