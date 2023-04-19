@@ -68,7 +68,7 @@ jobs:
         run: |
           cd public
           git status
-          echo: "diff-count=$(git status --porcelain | wc -l)" >> $GITHUB_OUTPUT
+          echo "diff-count=$(git status --porcelain | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Save static site for future PR merge
         id: save-static-site
