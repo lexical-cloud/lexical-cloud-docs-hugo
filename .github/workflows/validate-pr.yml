@@ -140,12 +140,17 @@ jobs:
       - uses: actions/github-script@v6
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
         with:
           script: |
-            const { PR_NUM } = process.env
+            const { PR_NUM, RUN_NUM } = process.env
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Review this deployment at https://staging.lexical.cloud. Then, update public submodule commit and create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.`
+              body: `Review deploy (${RUN_NUM}) at https://staging.lexical.cloud.
+
+                Afterwards:
+                  1. Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.
+                  2. Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.`
             })
