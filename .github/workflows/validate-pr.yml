@@ -1,4 +1,5 @@
 name: validate pr
+concurrency: staging
 on:
   pull_request:
     branches:
@@ -10,10 +11,8 @@ defaults:
 
 jobs:
   build:
-    if: startsWith(github.ref_name,'dependabot/submodules/public-') == false
+    if: startsWith(github.head_ref,'dependabot/submodules/public-') == false
     runs-on: ubuntu-22.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     outputs:
       static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
     steps:
@@ -52,7 +51,6 @@ jobs:
         run: |
           cd public
           git checkout main
-          git pull origin main
           git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
           git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
           cd ..
@@ -66,12 +64,15 @@ jobs:
           hugo --minify
   
       - name: Preview changes to public submodule
+        id: preview-public-changes 
         run: |
           cd public
           git status
+          echo "diff-count=$(git status --porcelain | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Save static site for future PR merge
         id: save-static-site
+        if: steps.preview-public-changes.outputs.diff_count != '0'
         run: |
           cd public
           git config user.name 'github-actions[bot]'
@@ -86,9 +87,8 @@ jobs:
 
   preview:
     needs: build
+    if: needs.build.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - name: Checkout project with submodules
         uses: actions/checkout@v3
@@ -101,18 +101,18 @@ jobs:
         id: checkout-static-site
         run: |
           cd public
+          echo "head-commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           git checkout deploy/hugo-pr-$PR_NUM
-          echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "branch-commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
 
       - name: Exit if static site changed since creation
         if: |
-          needs.build.outputs.static-site-sha == '' ||
-          needs.build.outputs.static-site-sha != steps.checkout-static-site.outputs.commit-sha
+          needs.build.outputs.static-site-sha != steps.checkout-static-site.outputs.branch-commit-sha
         run: |
-          echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.commit-sha}}"
+          echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.branch-commit-sha}}"
           exit 1
 
       - name: Stage static site for preview
@@ -132,3 +132,27 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
+
+  comment-on-pr:
+    needs: preview
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/github-script@v6
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+        with:
+          script: |
+            const { PR_NUM, RUN_NUM } = process.env
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
+
+                Actions:
+                  - [ ] Approve or reject the deployment.
+                  - [ ] Review deploy (${RUN_NUM}) at https://staging.lexical.cloud.
+                  - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
+                  - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.`
+            })

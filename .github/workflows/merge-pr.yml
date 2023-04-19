@@ -1,4 +1,5 @@
 name: merge pr
+concurrency: staging
 on:
   pull_request:
     branches:
@@ -13,8 +14,6 @@ jobs:
   if_merged:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - name: Checkout project with submodules
         uses: actions/checkout@v3
@@ -23,14 +22,20 @@ jobs:
           submodules: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create PR for public submodule
+      - name: Checkout branch for pr on public submodule 
+        id: checkout-public-pr-branch
         run: |
           cd public
+          echo "head-commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT          
           git checkout deploy/hugo-pr-$PR_NUM
-          gh pr create --title "Static site from pr $PR_NUM on lexical-cloud-docs-hugo" --body "See $PR_URL"
+          echo "branch-commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT          
+        continue-on-error: true
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           PR_URL: ${{ github.event.pull_request.html_url }}
-          PR_COMMIT: ${{ github.event.pull_request.head.sha }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Reminder to complete pr to lexical-cloud.github.io
+        if: |
+          steps.checkout-public-pr-branch.outputs.branch-commit-sha != '' ||
+          steps.checkout-public-pr-branch.outputs.head-commit-sha != steps.checkout-public-pr-branch.outputs.branch-commit-sha
+        run: exit 1
