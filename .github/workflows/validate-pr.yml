@@ -84,6 +84,19 @@ jobs:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
 
+      - name: Update public submodule commit
+        id: save-static-site
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public
+          git commit -m "generated static site in public submodule during pr $PR_NUM run $RUN_NUM"
+          git push origin $BRANCH_NAME
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+          BRANCH_NAME: ${{ github.ref }}
+
   preview:
     needs: build
     runs-on: ubuntu-22.04
