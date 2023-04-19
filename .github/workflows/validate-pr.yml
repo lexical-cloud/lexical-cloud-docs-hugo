@@ -51,8 +51,8 @@ jobs:
         run: |
           cd public
           git checkout main
-          git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
-          git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout -B deploy/hugo-pr-$PR_NUM
+          git checkout -B deploy/hugo-pr-$PR_NUM-$RUN_NUM
           cd ..
           rm -rf public/*
         env:
@@ -64,19 +64,22 @@ jobs:
           hugo --minify
   
       - name: Preview changes to public submodule
+        id: preview-public-changes 
         run: |
           cd public
           git status
+          echo: "diff-count=$(git status --porcelain | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Save static site for future PR merge
         id: save-static-site
+        if: steps.preview-public-changes.outputs.diff_count != '0'
         run: |
           cd public
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
           git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
-          git push origin --force deploy/hugo-pr-$PR_NUM-$RUN_NUM:deploy/hugo-pr-$PR_NUM
+          git push origin deploy/hugo-pr-$PR_NUM-$RUN_NUM:deploy/hugo-pr-$PR_NUM
           echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
@@ -84,6 +87,7 @@ jobs:
 
   preview:
     needs: build
+    if: needs.build.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout project with submodules
@@ -106,7 +110,6 @@ jobs:
 
       - name: Exit if static site changed since creation
         if: |
-          needs.build.outputs.static-site-sha == '' ||
           needs.build.outputs.static-site-sha != steps.checkout-static-site.outputs.branch-commit-sha
         run: |
           echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.branch-commit-sha}}"
@@ -145,9 +148,11 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Review deploy (${RUN_NUM}) at https://staging.lexical.cloud.
+              body: `## Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
 
-                Afterwards:
-                  1. Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.
-                  2. Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.`
+                Actions:
+                  - [ ] Approve or reject the deployment.
+                  - [ ] Review deploy (${RUN_NUM}) at https://staging.lexical.cloud.
+                  - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
+                  - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.`
             })
