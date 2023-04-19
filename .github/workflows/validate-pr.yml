@@ -20,7 +20,6 @@ jobs:
       - name: Checkout project with submodules
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
           fetch-depth: 0
           submodules: true
           token: ${{ secrets.LC_GP_CI }}
@@ -60,7 +59,6 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
-          BRANCH_NAME: ${{ github.head_ref }}
 
       - name: Generate static site with hugo
         run: |
@@ -94,7 +92,6 @@ jobs:
       - name: Checkout project with submodules
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
           fetch-depth: 0
           submodules: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -117,19 +114,6 @@ jobs:
         run: |
           echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.branch-commit-sha}}"
           exit 1
-
-      - name: Update public submodule commit before staging
-        if: steps.checkout-static-site.outputs.head-commit-sha != steps.checkout-static-site.outputs.branch-commit-sha
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add public
-          git commit -m "generated static site in public submodule during pr $PR_NUM run $RUN_NUM"
-          git push origin $BRANCH_NAME
-        env:
-          PR_NUM: ${{ github.event.pull_request.number }}
-          RUN_NUM: ${{ github.run_number }}
-          BRANCH_NAME: ${{ github.head_ref }}
 
       - name: Stage static site for preview
         run: |
