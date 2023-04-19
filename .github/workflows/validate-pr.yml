@@ -1,0 +1,134 @@
+name: validate pr
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    if: startsWith(github.ref_name,'dependabot/submodules/public-') == false
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    outputs:
+      static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
+    steps:
+      - name: Checkout project with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.LC_GP_CI }}
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.89.4'
+          extended: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.17.5'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            themes/docsy/package-lock.json
+
+      - name: Install project dependencies
+        run: |
+          npm ci
+
+      - name: Install docsy dependencies
+        run: |
+          cd themes/docsy
+          npm ci
+
+      - name: Setup public submodule to capture changes
+        run: |
+          cd public
+          git checkout main
+          git pull origin main
+          git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          cd ..
+          rm -rf public/*
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+
+      - name: Generate static site with hugo
+        run: |
+          hugo --minify
+  
+      - name: Preview changes to public submodule
+        run: |
+          cd public
+          git status
+
+      - name: Save static site for future PR merge
+        id: save-static-site
+        run: |
+          cd public
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
+          git push origin --force deploy/hugo-pr-$PR_NUM-$RUN_NUM:deploy/hugo-pr-$PR_NUM
+          echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+
+  preview:
+    needs: build
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Checkout project with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout static site for preview
+        id: checkout-static-site
+        run: |
+          cd public
+          git checkout deploy/hugo-pr-$PR_NUM
+          echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}
+
+      - name: Exit if static site changed since creation
+        if: |
+          needs.build.outputs.static-site-sha == '' ||
+          needs.build.outputs.static-site-sha != steps.checkout-static-site.outputs.commit-sha
+        run: |
+          echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.commit-sha}}"
+          exit 1
+
+      - name: Stage static site for preview
+        run: |
+          git branch preview/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout preview/hugo-pr-$PR_NUM-$RUN_NUM
+          mkdir docs
+          cp -r public/* docs/
+          touch docs/.nojekyll
+          echo 'staging.lexical.cloud' > docs/CNAME
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git status
+          git commit -m "preview of generated static site in pr $PR_NUM run $RUN_NUM"
+          git push origin --force preview/hugo-pr-$PR_NUM-$RUN_NUM:preview
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
+          RUN_NUM: ${{ github.run_number }}

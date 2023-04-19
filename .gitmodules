@@ -6,4 +6,4 @@
 	url = https://github.com/lexical-cloud/lexical-cloud.github.io.git
 [submodule "content"]
 	path = content
-	url = git@github.com:lexical-cloud/lexical-cloud-docs.git
+	url = https://github.com/lexical-cloud/lexical-cloud-docs.git
