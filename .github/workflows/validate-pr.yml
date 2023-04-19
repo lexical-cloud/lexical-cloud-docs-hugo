@@ -135,7 +135,7 @@ jobs:
 
   comment-on-pr:
     needs: preview
-    runs-on: ubuntu-22.0.4
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
         env:
