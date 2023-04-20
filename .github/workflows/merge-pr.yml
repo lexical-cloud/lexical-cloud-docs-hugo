@@ -36,6 +36,6 @@ jobs:
 
       - name: Reminder to complete pr to lexical-cloud.github.io
         if: |
-          steps.checkout-public-pr-branch.outputs.branch-commit-sha != '' ||
+          steps.checkout-public-pr-branch.outputs.branch-commit-sha != '' &&
           steps.checkout-public-pr-branch.outputs.head-commit-sha != steps.checkout-public-pr-branch.outputs.branch-commit-sha
         run: exit 1
