@@ -9,14 +9,6 @@ Install Prerequisite tools:
   * [Install Hugo](https://gohugo.io/getting-started/installing/)
   * [Check Docsy Prereqs](https://www.docsy.dev/docs/get-started/docsy-as-module/installation-prerequisites/)
 
-Dependency of site generation:
-```
-npm install -D postcss@"8.4.13"
-npm install -D postcss-cli@"9.1.0"
-npm install -D autoprefixer@"10.4.7"
-```
-Note: newer versions may exist now
-
 ### Setup Project
 
 Clone repository:
@@ -30,6 +22,12 @@ cd ${PROJECT_DIR}
 git submodule init
 git submodule update
 ```
+
+Dependency of site generation:
+```
+npm install
+```
+Note: newer versions may exist now
 
 Install theme dependencies:
 ```
