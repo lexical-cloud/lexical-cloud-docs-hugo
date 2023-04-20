@@ -148,8 +148,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 
-`### Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
+              body: `### Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
 
 Take these actions if approving:
   - [ ] Wait for the deployment to complete after approval.
