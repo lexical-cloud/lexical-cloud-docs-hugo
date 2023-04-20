@@ -93,7 +93,7 @@ jobs:
 
       - name: Delete static site branch for pr if created and static site is now unchanged
         if: |
-          steps.preview-public-changes.outputs.diff-count == '0' |
+          steps.preview-public-changes.outputs.diff-count == '0' ||
           steps.public-submodule-setup.outputs.main-sha != steps.public-submodule-setup.outputs.pr-sha
         run: |
           cd public
