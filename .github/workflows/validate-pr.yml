@@ -51,8 +51,8 @@ jobs:
         run: |
           cd public
           git checkout main
-          git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
-          git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout -B deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout -B deploy/hugo-pr-$PR_NUM
           cd ..
           rm -rf public/*
         env:
@@ -78,6 +78,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
+          git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
+          git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          git merge --squash deploy/hugo-pr-$PR_NUM
           git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
           git push origin --force deploy/hugo-pr-$PR_NUM-$RUN_NUM:deploy/hugo-pr-$PR_NUM
           echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
@@ -151,7 +154,8 @@ jobs:
               body: `
             ### Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
 
-            Take these actions if approving:
+            Take these actions before merging:
+              - [ ] Approve the deployment to staging.
               - [ ] Wait for the deployment to complete after approval.
               - [ ] Review deployment at https://staging.lexical.cloud.
               - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
