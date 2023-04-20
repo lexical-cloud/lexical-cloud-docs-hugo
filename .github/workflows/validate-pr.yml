@@ -150,9 +150,9 @@ jobs:
               repo: context.repo.repo,
               body: `### Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
 
-Take these actions if approving:
-  - [ ] Wait for the deployment to complete after approval.
-  - [ ] Review deployment at https://staging.lexical.cloud.
-  - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
-  - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.`
+              Take these actions if approving:
+                - [ ] Wait for the deployment to complete after approval.
+                - [ ] Review deployment at https://staging.lexical.cloud.
+                - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
+                - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.`
             })
