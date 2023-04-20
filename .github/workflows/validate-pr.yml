@@ -48,11 +48,14 @@ jobs:
           npm ci
 
       - name: Setup public submodule to capture changes
+        id: public-submodule-setup
         run: |
           cd public
           git checkout main
+          echo "main-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
           git checkout deploy/hugo-pr-$PR_NUM 2>/dev/null || git checkout -b deploy/hugo-pr-$PR_NUM
+          echo "pr-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           cd ..
           rm -rf public/*
         env:
@@ -87,6 +90,16 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
+
+      - name: Delete static site branch for pr if created and static site is now unchanged
+        if: |
+          steps.preview-public-changes.outputs.diff-count == '0' |
+          steps.public-submodule-setup.outputs.main-sha != steps.public-submodule-setup.outputs.pr-sha
+        run: |
+          cd public
+          git push origin :deploy/hugo-pr-$PR_NUM
+        env:
+          PR_NUM: ${{ github.event.pull_request.number }}
 
   preview:
     needs: build
