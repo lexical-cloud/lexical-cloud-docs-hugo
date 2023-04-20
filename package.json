@@ -2,8 +2,20 @@
   "name": "lexical-cloud-docs-hugo",
   "version": "0.1.0",
   "devDependencies": {
-    "postcss": "8.4.13",
     "postcss-cli": "9.1.0",
-    "autoprefixer": "10.4.7"
+    "browserslist": "4.21.1",
+    "node-releases": "2.0.6",
+    "autoprefixer": "10.4.7",
+    "postcss-load-config": "3.1.4",
+    "nanoid": "3.3.4",
+    "postcss": "8.4.13",
+    "fraction.js": "4.2.0",
+    "picocolors": "1.0.0",
+    "postcss-reporter": "7.0.5",
+    "postcss-value-parser": "4.2.0",
+    "normalize-range": "0.1.2",
+    "caniuse-lite": "1.0.30001364",
+    "electron-to-chromium": "1.4.185",
+    "source-map-js": "1.0.2"
   }
 }
