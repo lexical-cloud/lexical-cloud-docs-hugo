@@ -51,8 +51,8 @@ jobs:
         run: |
           cd public
           git checkout main
-          git checkout -B deploy/hugo-pr-$PR_NUM-$RUN_NUM
-          git checkout -B deploy/hugo-pr-$PR_NUM
+          git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
+          git checkout deploy/hugo-pr-$PR_NUM 2>/dev/null || git checkout -b deploy/hugo-pr-$PR_NUM
           cd ..
           rm -rf public/*
         env:
