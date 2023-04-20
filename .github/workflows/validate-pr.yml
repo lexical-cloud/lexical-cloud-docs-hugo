@@ -71,11 +71,13 @@ jobs:
         run: |
           cd public
           git status
+          echo "diff-count=$(git diff --name-only | wc -l)" >> $GITHUB_OUTPUT
           echo "main-diff-count=$(git diff --name-only main | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Save static site for future PR merge
         id: save-static-site
         if: |
+          steps.preview-public-changes.outputs.diff-count != '0' &&
           steps.preview-public-changes.outputs.main-diff-count != '0'
         run: |
           cd public
