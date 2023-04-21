@@ -13,6 +13,7 @@ jobs:
   build:
     if: startsWith(github.head_ref,'dependabot/submodules/public-') == false
     runs-on: ubuntu-22.04
+    environment: staging
     outputs:
       static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
     steps:
