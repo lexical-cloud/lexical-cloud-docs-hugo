@@ -110,7 +110,7 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
 
-  preview-prep:
+  deploy-prep:
     needs: build
     if: needs.build.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
@@ -158,7 +158,7 @@ jobs:
           path: ./public
 
   deploy:
-    needs: preview-prep
+    needs: deploy-prep
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -169,7 +169,7 @@ jobs:
         uses: actions/deploy-pages@v2
 
   comment-on-pr:
-    needs: deploy
+    needs: deploy-prep
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
