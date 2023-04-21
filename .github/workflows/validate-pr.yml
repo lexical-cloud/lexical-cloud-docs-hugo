@@ -105,7 +105,7 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
 
-  preview:
+  preview-prep:
     needs: build
     if: needs.build.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
@@ -153,8 +153,28 @@ jobs:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
 
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public
+
+  deploy:
+    needs: preview-prep
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
   comment-on-pr:
-    needs: preview
+    needs: deploy
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
