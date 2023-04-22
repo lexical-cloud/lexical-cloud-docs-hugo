@@ -5,6 +5,12 @@ on:
     branches:
       - 'main'
 
+permissions:
+  contents: read
+  pull-requests: write
+  pages: write
+  id-token: write
+
 defaults:
   run:
     shell: bash
@@ -13,6 +19,7 @@ jobs:
   build:
     if: startsWith(github.head_ref,'dependabot/submodules/public-') == false
     runs-on: ubuntu-22.04
+    environment: staging
     outputs:
       static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
     steps:
@@ -104,7 +111,7 @@ jobs:
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
 
-  preview:
+  deploy-prep:
     needs: build
     if: needs.build.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
@@ -136,24 +143,34 @@ jobs:
 
       - name: Stage static site for preview
         run: |
-          git branch preview/hugo-pr-$PR_NUM-$RUN_NUM
-          git checkout preview/hugo-pr-$PR_NUM-$RUN_NUM
-          mkdir docs
-          cp -r public/* docs/
-          touch docs/.nojekyll
-          echo 'staging.lexical.cloud' > docs/CNAME
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add .
-          git status
-          git commit -m "preview of generated static site in pr $PR_NUM run $RUN_NUM"
-          git push origin --force preview/hugo-pr-$PR_NUM-$RUN_NUM:preview
+          touch public/.nojekyll
+          echo 'staging.lexical.cloud' > public/CNAME
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
 
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public
+
+  deploy:
+    needs: deploy-prep
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
   comment-on-pr:
-    needs: preview
+    needs: deploy-prep
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
