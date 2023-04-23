@@ -17,7 +17,9 @@ defaults:
 
 jobs:
   build:
-    if: startsWith(github.head_ref,'dependabot/submodules/public-') == false
+    if: |
+       startsWith(github.head_ref,'dependabot/submodules/public-') == false &&
+       github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-22.04
     environment: staging
     outputs:
