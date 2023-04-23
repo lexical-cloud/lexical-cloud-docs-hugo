@@ -51,7 +51,7 @@ jobs:
 
       - name: Generate static site with hugo
         run: |
-          hugo --minify
+          hugo --minify --baseURL https://wes-williams.github.io/lexical-cloud-docs-hugo/
   
       - name: Preview changes to public submodule
         id: preview-public-changes 
