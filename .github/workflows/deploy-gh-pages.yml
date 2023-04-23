@@ -51,7 +51,7 @@ jobs:
 
       - name: Generate static site with hugo
         run: |
-          hugo --minify --baseURL https://${{ GITHUB_REPOSITORY_OWNER }}/${{ GITHUB_REF_NAME }/
+          hugo --minify --baseURL https://${{ vars.GITHUB_REPOSITORY_OWNER }}/${{ vars.GITHUB_REF_NAME }/
 
       - name: Preview changes to public submodule
         id: preview-public-changes 
