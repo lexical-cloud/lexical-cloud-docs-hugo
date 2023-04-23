@@ -1,7 +1,6 @@
 name: validate pr
 concurrency: staging
 on:
-  workflow_dispatch:
   pull_request:
     branches:
       - 'main'
