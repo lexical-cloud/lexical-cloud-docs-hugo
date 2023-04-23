@@ -1,4 +1,4 @@
-name: validate fork pr
+name: deploy gh pages
 concurrency: staging
 on:
   workflow_dispatch:
