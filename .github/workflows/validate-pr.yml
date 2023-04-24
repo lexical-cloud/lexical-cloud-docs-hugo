@@ -1,4 +1,4 @@
-name: validate fork pr
+name: validate pr
 concurrency: staging
 on:
   pull_request:
