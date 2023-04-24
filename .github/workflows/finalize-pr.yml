@@ -1,0 +1,20 @@
+name: finalize pr
+concurrency: staging
+on:
+  workflow_run:
+    workflows:
+      - 'validate pr'
+    types:
+      - completed
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  build:
+
+      - name: Show output
+        run: |
+          echo "Finalizing PR"
