@@ -102,5 +102,5 @@ jobs:
           git status
           cd public
           git checkout main
-          tar -xvf ../artifact.tar
+          tar -xf ../artifact.tar
           git status
