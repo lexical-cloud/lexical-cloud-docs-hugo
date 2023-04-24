@@ -10,12 +10,25 @@ defaults:
     shell: bash
 
 jobs:
+  debugging:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Vars for debugging
+        run: |
+          echo "Event Type: ${DEBUG_EVENT_TYPE}"
+          echo "Is Fork: ${DEBUG_FORK}"
+          echo "Head Ref: ${DEBUG_HEAD_REF}"
+    env:
+      DEBUG_FORK: ${{ github.event.pull_request.head.repo.fork }}
+      DEBUG_EVENT_TYPE: ${{ github.event.type }}
+      DEBUG_HEAD_REF:  ${{ github.event.review.state }}
+
   preconditions:
+    needs: debugging
     if: |
        startsWith(github.head_ref,'dependabot/submodules/public-') == false &&
        github.event.pull_request.head.repo.fork == true
     runs-on: ubuntu-22.04
-    environment: staging
     steps:
       - name: Precondition passed output
         run: |
@@ -24,7 +37,6 @@ jobs:
   build:
     needs: preconditions
     runs-on: ubuntu-22.04
-    environment: staging
     outputs:
       static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
     steps:

@@ -18,15 +18,33 @@ defaults:
     shell: bash
 
 jobs:
+  debugging:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Vars for debugging
+        run: |
+          echo "Event Type: ${DEBUG_EVENT_TYPE}"
+          echo "Is Fork: ${DEBUG_FORK}"
+          echo "Head Ref: ${DEBUG_HEAD_REF}"
+          echo "Review State: ${DEBUG_REVIEW_STATE}"
+          echo "Review Sender: ${DEBUG_REVIEW_SENDER}"
+    env:
+      DEBUG_FORK: ${{ github.event.pull_request.head.repo.fork }}
+      DEBUG_EVENT_TYPE: ${{ github.event.type }}
+      DEBUG_HEAD_REF:  ${{ github.event.review.state }}
+      DEBUG_REVIEW_STATE:  ${{ github.event.review.state }}
+      DEBUG_REVIEW_SENDER:  ${{ github.event.review.sender }}
+
   preconditions:
+    needs: debugging
     if: |
        (github.event.pull_request.head.repo.fork == false &&
         startsWith(github.head_ref,'dependabot/submodules/public-') == false) ||
        (github.event.pull_request.head.repo.fork == true &&
+        github.event.type == 'PullRequestReviewEvent' &&
         github.event.review.state == 'approved' &&
         github.event.review.sender == 'wahlax-llc')
     runs-on: ubuntu-22.04
-    environment: staging
     steps:
       - name: Precondition passed output
         run: |
