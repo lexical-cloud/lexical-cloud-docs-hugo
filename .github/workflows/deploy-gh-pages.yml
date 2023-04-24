@@ -52,7 +52,7 @@ jobs:
       - name: If fork, generate static site with hugo
         if: github.event.pull_request.head.repo.fork == true
         run: |
-          hugo --minify --baseURL "/lexical-cloud-docs-hugo/"
+          hugo --minify --baseURL "/${GITHUB_REPOSITORY#*/}/"
 
       - name: If not fork, generate static site with hugo
         if: github.event.pull_request.head.repo.fork == false
