@@ -80,6 +80,7 @@ jobs:
           path: ./public
 
   preview_artifacts:
+    needs: build
     runs-on: ubuntu-22.04
     environment: staging
     steps:
