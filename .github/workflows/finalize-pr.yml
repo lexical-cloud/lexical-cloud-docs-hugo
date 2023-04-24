@@ -1,0 +1,22 @@
+name: finalize pr
+concurrency: staging
+on:
+  workflow_run:
+    workflows:
+      - 'validate pr'
+    types:
+      - completed
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  build:
+    runs-on: ubuntu-22.04
+    environment: staging
+    steps:
+      - name: Show output
+        run: |
+          echo "Finalizing PR"
