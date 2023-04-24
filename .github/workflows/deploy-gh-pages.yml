@@ -49,11 +49,15 @@ jobs:
           cd themes/docsy
           npm ci
 
-      - name: Generate static site with hugo
+      - name: If fork, generate static site with hugo
+        if: github.event.pull_request.head.repo.fork == true
         run: |
-          HUGO_BASE_URL="/${GITHUB_REPOSITORY#*/}/"
-          echo "Base URL: ${HUGO_BASE_URL}"
-          hugo --minify --baseURL "${HUGO_BASE_URL}"
+          hugo --minify --baseURL "/lexical-cloud-docs-hugo/"
+
+      - name: If not fork, generate static site with hugo
+        if: github.event.pull_request.head.repo.fork == false
+        run: |
+          hugo --minify
   
       - name: Preview changes to public submodule
         id: preview-public-changes 
