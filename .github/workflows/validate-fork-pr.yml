@@ -15,13 +15,13 @@ jobs:
     steps:
       - name: Vars for debugging
         run: |
-          echo "Event Type: ${DEBUG_EVENT_TYPE}"
+          echo "Event Name: ${DEBUG_EVENT_Name}"
           echo "Is Fork: ${DEBUG_FORK}"
           echo "Head Ref: ${DEBUG_HEAD_REF}"
     env:
       DEBUG_FORK: ${{ github.event.pull_request.head.repo.fork }}
-      DEBUG_EVENT_TYPE: ${{ github.event.type }}
-      DEBUG_HEAD_REF:  ${{ github.event.review.state }}
+      DEBUG_EVENT_Name: ${{ github.event_name }}
+      DEBUG_HEAD_REF:  ${{ github.head_ref }}
 
   preconditions:
     needs: debugging

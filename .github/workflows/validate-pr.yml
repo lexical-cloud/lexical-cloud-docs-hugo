@@ -23,17 +23,17 @@ jobs:
     steps:
       - name: Vars for debugging
         run: |
-          echo "Event Type: ${DEBUG_EVENT_TYPE}"
+          echo "Event Name: ${DEBUG_EVENT_Name}"
           echo "Is Fork: ${DEBUG_FORK}"
           echo "Head Ref: ${DEBUG_HEAD_REF}"
           echo "Review State: ${DEBUG_REVIEW_STATE}"
           echo "Review Sender: ${DEBUG_REVIEW_SENDER}"
     env:
       DEBUG_FORK: ${{ github.event.pull_request.head.repo.fork }}
-      DEBUG_EVENT_TYPE: ${{ github.event.type }}
-      DEBUG_HEAD_REF:  ${{ github.event.review.state }}
+      DEBUG_EVENT_Name: ${{ github.event_name }}
+      DEBUG_HEAD_REF:  ${{ github.head_ref }}
       DEBUG_REVIEW_STATE:  ${{ github.event.review.state }}
-      DEBUG_REVIEW_SENDER:  ${{ github.event.review.sender }}
+      DEBUG_REVIEW_SENDER:  ${{ github.actor }}
 
   preconditions:
     needs: debugging
@@ -41,9 +41,9 @@ jobs:
        (github.event.pull_request.head.repo.fork == false &&
         startsWith(github.head_ref,'dependabot/submodules/public-') == false) ||
        (github.event.pull_request.head.repo.fork == true &&
-        github.event.type == 'PullRequestReviewEvent' &&
+        github.event_name == 'pull_request_review' &&
         github.event.review.state == 'approved' &&
-        github.event.review.sender == 'wahlax-llc')
+        github.actor == 'wahlax-llc')
     runs-on: ubuntu-22.04
     steps:
       - name: Precondition passed output
