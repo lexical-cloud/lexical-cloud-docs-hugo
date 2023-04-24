@@ -78,3 +78,28 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
+
+  preview_artifacts:
+    if: |
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-22.04
+    environment: staging
+    steps:
+
+      - name: Checkout project with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+
+      - name: list files
+        run: |
+          ls
+          git status
+          exit 1
