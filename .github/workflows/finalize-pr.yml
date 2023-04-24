@@ -14,7 +14,9 @@ defaults:
 jobs:
 
   build:
-
+    runs-on: ubuntu-22.04
+    environment: staging
+    steps:
       - name: Show output
         run: |
           echo "Finalizing PR"
