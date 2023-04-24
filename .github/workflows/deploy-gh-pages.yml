@@ -51,7 +51,7 @@ jobs:
 
       - name: Generate static site with hugo
         run: |
-          HUGO_BASE_URL="https://${GITHUB_REPOSITORY%/*}.github.io/${GITHUB_REPOSITORY#*/}/"
+          HUGO_BASE_URL="/${GITHUB_REPOSITORY#*/}/"
           echo "Base URL: ${HUGO_BASE_URL}"
           hugo --minify --baseURL "${HUGO_BASE_URL}"
   
