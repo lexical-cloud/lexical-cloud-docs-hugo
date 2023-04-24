@@ -61,10 +61,10 @@ jobs:
         run: |
           cd public
           git checkout main
-          echo "main-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-          git branch deploy/hugo-pr-$PR_NUM-$RUN_NUM
-          git checkout deploy/hugo-pr-$PR_NUM 2>/dev/null || git checkout -b deploy/hugo-pr-$PR_NUM
-          echo "pr-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "main-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+          git branch deploy/hugo-pr-${PR_NUM}-${RUN_NUM}
+          git checkout deploy/hugo-pr-${PR_NUM} 2>/dev/null || git checkout -b deploy/hugo-pr-${PR_NUM}
+          echo "pr-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
           cd ..
           rm -rf public/*
         env:
@@ -81,8 +81,8 @@ jobs:
           cd public
           git add .
           git status
-          echo "diff-count=$(git status --porcelain | wc -l)" >> $GITHUB_OUTPUT
-          echo "main-diff-count=$(git diff --name-only main | wc -l)" >> $GITHUB_OUTPUT
+          echo "diff-count=$(git status --porcelain | wc -l)" >> ${GITHUB_OUTPUT}
+          echo "main-diff-count=$(git diff --name-only main | wc -l)" >> ${GITHUB_OUTPUT}
 
       - name: Save static site for future PR merge
         id: save-static-site
@@ -93,12 +93,12 @@ jobs:
           cd public
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
-          git checkout deploy/hugo-pr-$PR_NUM-$RUN_NUM
-          git merge --squash deploy/hugo-pr-$PR_NUM
-          git commit -m "generated static site in pr $PR_NUM on lexical-cloud-docs-hugo"
-          git push origin --force deploy/hugo-pr-$PR_NUM-$RUN_NUM:deploy/hugo-pr-$PR_NUM
-          echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          git commit -m "generated static site in pr ${PR_NUM} on lexical-cloud-docs-hugo"
+          git checkout deploy/hugo-pr-${PR_NUM}-${RUN_NUM}
+          git merge --squash deploy/hugo-pr-${PR_NUM}
+          git commit -m "generated static site in pr ${PR_NUM} on lexical-cloud-docs-hugo"
+          git push origin --force deploy/hugo-pr-${PR_NUM}-${RUN_NUM}:deploy/hugo-pr-${PR_NUM}
+          echo "commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
@@ -109,7 +109,7 @@ jobs:
           steps.public-submodule-setup.outputs.main-sha != steps.public-submodule-setup.outputs.pr-sha
         run: |
           cd public
-          git push origin :deploy/hugo-pr-$PR_NUM
+          git push origin :deploy/hugo-pr-${PR_NUM}
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
 
@@ -129,9 +129,9 @@ jobs:
         id: checkout-static-site
         run: |
           cd public
-          echo "head-commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-          git checkout deploy/hugo-pr-$PR_NUM
-          echo "branch-commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "head-commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+          git checkout deploy/hugo-pr-${PR_NUM}
+          echo "branch-commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
         env:
           PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
@@ -147,9 +147,6 @@ jobs:
         run: |
           touch public/.nojekyll
           echo 'staging.lexical.cloud' > public/CNAME
-        env:
-          PR_NUM: ${{ github.event.pull_request.number }}
-          RUN_NUM: ${{ github.run_number }}
 
       - name: Setup Pages
         id: pages
