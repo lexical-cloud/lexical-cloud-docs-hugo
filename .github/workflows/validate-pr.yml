@@ -100,4 +100,7 @@ jobs:
         run: |
           ls
           git status
-          exit 1
+          cd public
+          git checkout main
+          tar -xvf ../artifact.tar
+          git status
