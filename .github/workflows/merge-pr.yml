@@ -12,7 +12,10 @@ permissions:
 
 jobs:
   if_merged:
-    if: github.event.pull_request.merged == true
+    # this workflow should not run on forks
+    if: |
+      github.repository == 'lexical-cloud/lexical-cloud-docs-hugo' &&
+      github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout project with submodules
