@@ -76,7 +76,7 @@ jobs:
       - name: Generate static site with hugo using base-url
         if: inputs.base-url != ''
         run: |
-          hugo --minify --base-url "${BASE_URL}
+          hugo --minify --base-url "${BASE_URL}"
           touch public/.nojekyll
           echo '' > public/CNAME
           
