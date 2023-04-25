@@ -24,7 +24,7 @@ jobs:
 
   preconditions:
     if: |
-       startsWith(inputs.branch-name`,'dependabot/submodules/public-') == false
+       startsWith(inputs.branch-name,'dependabot/submodules/public-') == false
     runs-on: ubuntu-22.04
     steps:
       - name: Precondition passed output
