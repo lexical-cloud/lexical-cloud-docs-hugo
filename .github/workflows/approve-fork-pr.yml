@@ -1,32 +1,22 @@
-name: validate pr
+name: approve fork pr
 concurrency: staging
 on:
-  pull_request:
-    branches:
-      - 'main'
+  pull_request_review:
+    types:
+      - submitted
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  debugging:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Vars for debugging
-        run: |
-          echo "Event Name: ${DEBUG_EVENT_Name}"
-          echo "Is Fork: ${DEBUG_FORK}"
-          echo "Head Ref: ${DEBUG_HEAD_REF}"
-    env:
-      DEBUG_FORK: ${{ github.event.pull_request.head.repo.fork }}
-      DEBUG_EVENT_Name: ${{ github.event_name }}
-      DEBUG_HEAD_REF:  ${{ github.head_ref }}
 
   preconditions:
-    needs: debugging
     if: |
-       startsWith(github.head_ref,'dependabot/submodules/public-') == false
+       github.event.pull_request.head.repo.fork == true &&
+       github.event_name == 'pull_request_review' &&
+       github.event.review.state == 'approved' &&
+       github.actor == 'wahlax-llc'
     runs-on: ubuntu-22.04
     steps:
       - name: Precondition passed output
@@ -75,8 +65,6 @@ jobs:
           hugo --minify
 
       - name: Upload artifact
-        if: 
-          github.event.pull_request.head.repo.fork == false
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
