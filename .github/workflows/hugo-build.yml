@@ -72,6 +72,9 @@ jobs:
         if: inputs.base-url != ''
         run: |
           hugo --minify --base-url "${BASE_URL}
+          touch public/.nojekyll
+          echo '' > public/CNAME
+          
         env:
           BASE_URL: inputs.base-url
 
@@ -80,10 +83,19 @@ jobs:
         run: |
           hugo --minify
 
-      - name: Upload artifact
+      - name: If base-url not present, upload deployable artifact to hugo-static-site
         if: 
+          inputs.base-url == '' &&
           inputs.is-deployable == true
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
           name: hugo-static-site
+
+      - name: If base-url present, upload deployable artifact to github-pages
+        if: 
+          inputs.base-url != '' &&
+          inputs.is-deployable == true
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public

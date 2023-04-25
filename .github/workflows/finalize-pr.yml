@@ -19,7 +19,7 @@ defaults:
     shell: bash
 
 env:
-  PR_NUM: 'test'
+  PR_NUM: 'TODO'
   GP_CNAME: 'staging.lexical.cloud'
   RUN_NUM: ${{ github.run_number }}
 
@@ -27,30 +27,39 @@ jobs:
 
   preconditions:
     runs-on: ubuntu-22.04
-    outputs:
-      artifact-found: ${{ steps.verify-gh-pages-artifact.artifact-found }}
     steps:
       - name: Verify artifact not present
-        id: verify-gh-pages-artifact
+        id: verify-gh-pages-artifact-missing
         run: |
           if [ -f artifact.tar ]; then
             echo "found artifact where it should not be"
             exit 1
           fi
 
-      - uses: actions/download-artifact@v3
+      - name: Download github-pages artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+
+      - name: Verify github-pages artifact not already present
+        id: check-gh-pages-artifact
+        run: |
+          if [ -f artifact.tar ]; then
+            echo "found prebuilt github-pages artifact"
+            exit 1
+          fi
+
+      - name: Download hugo-static-site artifact
+        uses: actions/download-artifact@v3
         with:
           name: hugo-static-site
 
       - name: Verify hugo-static-site artifact
         id: verify-gh-pages-artifact
         run: |
-          if [ -f artifact.tar ]; then
-            echo "found hugo-static-site artifact"
-            echo "artifact-found=true" >> ${GITHUB_OUTPUT}
-          else
+          if [ ! -f artifact.tar ]; then
             echo "missing hugo-static-site artifact"
-            echo "artifact-found=false" >> ${GITHUB_OUTPUT}
+            exit 1
           fi
 
       - name: Precondition passed output
@@ -59,7 +68,6 @@ jobs:
     
   build:
     needs: preconditions
-    if: needs.preconditions.outputs.artifact-found == 'true'
     runs-on: ubuntu-22.04
     environment: staging
     outputs:
@@ -131,7 +139,8 @@ jobs:
 
   deploy-prep:
     needs: build
-    if: needs.build.outputs.static-site-sha != ''
+    if: |
+      needs.build.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout project with submodules
