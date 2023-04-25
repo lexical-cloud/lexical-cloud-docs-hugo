@@ -18,13 +18,15 @@ jobs:
     steps:
       - name: Precondition passed output
         run: |
+          echo "BASE URL: github.event.pull_request.base.repo.url"
+          echo "HEAD URL: github.event.pull_request.base.repo.url"
           echo "Preconditions passed"
 
   build-and-deploy:
     needs: preconditions
     uses: ./.github/workflows/hugo-build.yml
     with:
-      is-deployable: ${{  github.event.pull_request.head.repo.fork == false  }}
+      is-deployable: ${{ github.event.pull_request.head.repo.fork == false }}
       branch-name: ${{ github.head_ref }}
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}

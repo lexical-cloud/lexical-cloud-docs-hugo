@@ -26,6 +26,9 @@ env:
 jobs:
 
   preconditions:
+    # this workflow should not run on forks
+    if: |
+      github.repository == 'lexical-cloud/lexical-cloud-docs-hugo'
     runs-on: ubuntu-22.04
     steps:
       - name: Verify artifact not present
