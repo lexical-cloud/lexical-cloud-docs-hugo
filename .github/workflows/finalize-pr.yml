@@ -18,7 +18,7 @@ defaults:
   run:
     shell: bash
 
- env:
+env:
   PR_NUM: ${{ github.event.pull_request.number }}
   RUN_NUM: ${{ github.run_number }}
 

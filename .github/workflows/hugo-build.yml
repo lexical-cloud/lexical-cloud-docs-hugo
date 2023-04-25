@@ -72,7 +72,7 @@ jobs:
         if: inputs.base-url != ''
         run: |
           hugo --minify --base-url "${BASE_URL}
-        env
+        env:
           BASE_URL: inputs.base-url
 
       - name: Generate static site with hugo and default base-url
