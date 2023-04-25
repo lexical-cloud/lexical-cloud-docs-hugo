@@ -17,7 +17,7 @@ jobs:
   preconditions:
     runs-on: ubuntu-22.04
     outputs:
-      base-url: ${{ steps.build-setup.base-url }}
+      base-url: ${{ steps.build-setup.outputs.base-url }}
     steps:
       - name: Build setup
         id: build-setup
@@ -32,7 +32,7 @@ jobs:
       is-deployable: true
       artifact-name: github-pages
       branch-name: ${{ github.head_ref }}
-      base-url: ${{ needs.preconditions.base-url }} 
+      base-url: ${{ needs.preconditions.outputs.base-url }} 
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
 
