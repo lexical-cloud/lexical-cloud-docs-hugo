@@ -30,6 +30,7 @@ jobs:
     uses: ./.github/workflows/hugo-build.yml
     with:
       is-deployable: true
+      artifact-name: gh-pages
       branch-name: ${{ github.head_ref }}
       base-url: ${{ needs.preconditions.base-url }} 
     secrets:

@@ -1,4 +1,4 @@
-name: validate pr
+name: hugo build
 
 on:
   workflow_call:
@@ -6,12 +6,17 @@ on:
       is-deployable:
         required: true
         type: boolean
+      artifact-name:
+        required: false
+        type: string
+        default: hugo-static-site
       branch-name:
         required: true
         type: string
       base-url:
         required: false
         type: string
+        default: ''
     secrets:
       token:
         required: true
@@ -76,26 +81,17 @@ jobs:
           echo '' > public/CNAME
           
         env:
-          BASE_URL: inputs.base-url
+          BASE_URL: ${{ inputs.base-url }}
 
       - name: Generate static site with hugo and default base-url
         if: inputs.base-url == ''
         run: |
           hugo --minify
 
-      - name: If base-url not present, upload deployable artifact to hugo-static-site
+      - name: Upload deployable artifact
         if: 
-          inputs.base-url == '' &&
           inputs.is-deployable == true
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
-          name: hugo-static-site
-
-      - name: If base-url present, upload deployable artifact to github-pages
-        if: 
-          inputs.base-url != '' &&
-          inputs.is-deployable == true
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./public
+          name: ${{ inputs.artifact-name }}
