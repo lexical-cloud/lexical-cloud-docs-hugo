@@ -40,6 +40,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: github-pages
+        continue-on-error: true
 
       - name: Verify github-pages artifact not already present
         id: check-gh-pages-artifact
@@ -53,6 +54,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: hugo-static-site
+        continue-on-error: true
 
       - name: Verify hugo-static-site artifact
         id: verify-gh-pages-artifact
@@ -102,7 +104,7 @@ jobs:
           cd ..
           rm -rf public/*
           cd public
-          tar -xf ../../artifact.tar
+          tar -xvf ../artifact.tar
   
       - name: Preview changes to public submodule
         id: preview-public-changes
