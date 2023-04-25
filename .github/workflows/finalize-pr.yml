@@ -19,46 +19,47 @@ defaults:
     shell: bash
 
 env:
-  PR_NUM: ${{ github.event.pull_request.number }}
+  PR_NUM: 'test'
+  GP_CNAME: 'staging.lexical.cloud'
   RUN_NUM: ${{ github.run_number }}
 
 jobs:
 
   preconditions:
-    needs: debugging
-    if: |
-       (github.event.pull_request.head.repo.fork == false &&
-        startsWith(github.head_ref,'dependabot/submodules/public-') == false) ||
-       (github.event.pull_request.head.repo.fork == true &&
-        github.event_name == 'pull_request_review' &&
-        github.event.review.state == 'approved' &&
-        github.actor == 'wahlax-llc')
     runs-on: ubuntu-22.04
     outputs:
       artifact-found: ${{ steps.verify-gh-pages-artifact.artifact-found }}
     steps:
-      - name: Precondition passed output
-        run: |
-          echo "Preconditions passed"
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: github-pages
-
-      - name: Verify gh-pages artifact
+      - name: Verify artifact not present
         id: verify-gh-pages-artifact
         run: |
           if [ -f artifact.tar ]; then
-            echo "found gh-pages artifact"
+            echo "found artifact where it should not be"
+            exit 1
+          fi
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: hugo-static-site
+
+      - name: Verify hugo-static-site artifact
+        id: verify-gh-pages-artifact
+        run: |
+          if [ -f artifact.tar ]; then
+            echo "found hugo-static-site artifact"
             echo "artifact-found=true" >> ${GITHUB_OUTPUT}
           else
-            echo "missing gh-pages artifact"
+            echo "missing hugo-static-site artifact"
             echo "artifact-found=false" >> ${GITHUB_OUTPUT}
           fi
+
+      - name: Precondition passed output
+        run: |
+          echo "Preconditions passed"
     
   build:
     needs: preconditions
-    if: needs.preconditions.outputs.artifact-found != 'true'
+    if: needs.preconditions.outputs.artifact-found == 'true'
     runs-on: ubuntu-22.04
     environment: staging
     outputs:
@@ -74,14 +75,14 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: github-pages
+          name: hugo-static-site
 
       - name: Setup public submodule to capture changes in github-pages
         id: public-submodule-setup
         run: |
           git status
           if [ ! -f artifact.tar ]; then
-            echo "missing gh-pages artifact"
+            echo "missing hugo-static-site artifact"
             exit 1
           fi
           cd public
@@ -93,7 +94,7 @@ jobs:
           cd ..
           rm -rf public/*
           cd public
-          tar -xf ../artifact.tar
+          tar -xf ../../artifact.tar
   
       - name: Preview changes to public submodule
         id: preview-public-changes
@@ -161,7 +162,7 @@ jobs:
       - name: Stage static site for preview
         run: |
           touch public/.nojekyll
-          echo 'staging.lexical.cloud' > public/CNAME
+          echo "${GP_CNAME}" > public/CNAME
 
       - name: Setup Pages
         id: pages
