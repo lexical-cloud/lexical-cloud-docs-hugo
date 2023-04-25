@@ -37,7 +37,7 @@ jobs:
       token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-    needs: deploy-prep
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
