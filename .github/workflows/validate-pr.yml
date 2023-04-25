@@ -13,7 +13,7 @@ jobs:
 
   preconditions:
     if: |
-       startsWith(github.head_ref,'dependabot/submodules/public-') == false
+      startsWith(github.head_ref,'dependabot/submodules/public-') == false
     runs-on: ubuntu-22.04
     steps:
       - name: Precondition passed output
