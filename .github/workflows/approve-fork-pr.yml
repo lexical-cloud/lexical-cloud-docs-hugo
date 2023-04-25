@@ -22,49 +22,12 @@ jobs:
       - name: Precondition passed output
         run: |
           echo "Preconditions passed"
-   
-  build:
+
+  build-and-deploy:
     needs: preconditions
-    runs-on: ubuntu-22.04
-    outputs:
-      static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
-    steps:
-      - name: Checkout project with submodules
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          submodules: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.89.4'
-          extended: true
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14.17.5'
-          cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            themes/docsy/package-lock.json
-
-      - name: Install project dependencies
-        run: |
-          npm ci
-
-      - name: Install docsy dependencies
-        run: |
-          cd themes/docsy
-          npm ci
-
-      - name: Generate static site with hugo
-        run: |
-          hugo --minify
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./public
+    uses: ./.github/workflows/hugo-build.yml
+    with:
+      is-deployable: ${{  github.event.pull_request.head.repo.fork == false  }}
+      branch-name: ${{ github.head_ref }}
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
