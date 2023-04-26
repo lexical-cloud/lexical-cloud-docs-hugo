@@ -1,0 +1,33 @@
+name: pr artifact to outputs
+
+on:
+  workflow_call:
+      
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  restore-outputs:
+    runs-on: ubuntu-22.04
+    outputs:
+      pr-number: ${{ steps.extract-pr-data-artifact.outputs.pr-number }}
+    steps:
+      - name: Download pr data artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pr-data
+
+      - name: Extract pr data artifact to outputs
+        id: extract-pr-data-artifact
+        run: |
+          pr_number=$(cat pr-data.txt)
+          
+          is_number='^[0-9]+$'
+          if ! [[ ${pr_number} =~ ${is_number} ]]; then
+            echo "pr-number in artifact is not numeric"
+            exit 1
+          fi
+
+          echo "pr-number=${pr_number}" >> ${GITHUB_OUTPUT}

@@ -4,8 +4,15 @@ on:
   workflow_run:
     workflows:
       - 'validate pr'
+      - 'approve fork pr'
     types:
       - completed
+
+permissions:
+  contents: read
+  pull-requests: write
+  pages: write
+  id-token: write
 
 defaults:
   run:
@@ -13,10 +20,221 @@ defaults:
 
 jobs:
 
+  preconditions:
+    # this workflow should not run on forks
+    if: |
+      github.repository == 'lexical-cloud/lexical-cloud-docs-hugo'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Verify artifact not present
+        id: verify-gh-pages-artifact-missing
+        run: |
+          if [ -f artifact.tar ]; then
+            echo "found artifact where it should not be"
+            exit 1
+          fi
+
+      - name: Download github-pages artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: github-pages
+        continue-on-error: true
+
+      - name: Verify github-pages artifact not already present
+        id: check-gh-pages-artifact
+        run: |
+          if [ -f artifact.tar ]; then
+            echo "found prebuilt github-pages artifact"
+            exit 1
+          fi
+
+      - name: Download hugo-static-site artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: hugo-static-site
+        continue-on-error: true
+
+      - name: Verify hugo-static-site artifact
+        id: verify-gh-pages-artifact
+        run: |
+          if [ ! -f artifact.tar ]; then
+            echo "missing hugo-static-site artifact"
+            exit 1
+          fi
+
+      - name: Precondition passed output
+        run: |
+          echo "Preconditions passed"
+    
+  load-pr-data:
+    needs: preconditions
+    uses: ./.github/workflows/pr-artifact-to-outputs.yml
+
   build:
+    needs: load-pr-data
     runs-on: ubuntu-22.04
     environment: staging
+    outputs:
+      static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
     steps:
-      - name: Show output
+
+      - name: Checkout project with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.LC_GP_CI }}
+
+      - name: Verify artifact not present before downloading
+        id: public-submodule-setup
         run: |
-          echo "Finalizing PR"
+          if [ -f artifact.tar ]; then
+            echo "unexpected artifact exist before download"
+            exit 1
+          fi
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: hugo-static-site
+
+      - name: Setup public submodule to capture changes in github-pages
+        id: public-submodule-setup
+        run: |
+          git status
+          if [ ! -f artifact.tar ]; then
+            echo "missing hugo-static-site artifact"
+            exit 1
+          fi
+          cd public
+          git checkout main
+          echo "main-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+          git branch deploy/hugo-pr-${PR_NUM}-${RUN_NUM}
+          git checkout deploy/hugo-pr-${PR_NUM} 2>/dev/null || git checkout -b deploy/hugo-pr-${PR_NUM}
+          echo "pr-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+          cd ..
+          rm -rf public/*
+          cd public
+          tar -xvf ../artifact.tar
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
+
+  
+      - name: Preview changes to public submodule
+        id: preview-public-changes
+        run: |
+          cd public
+          git add .
+          git status
+          echo "diff-count=$(git status --porcelain | wc -l)" >> ${GITHUB_OUTPUT}
+          echo "main-diff-count=$(git diff --name-only main | wc -l)" >> ${GITHUB_OUTPUT}
+
+      - name: Save static site for future PR merge
+        id: save-static-site
+        if: |
+          steps.preview-public-changes.outputs.diff-count != '0' &&
+          steps.preview-public-changes.outputs.main-diff-count != '0'
+        run: |
+          cd public
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit -m "generated static site in pr ${PR_NUM} on lexical-cloud-docs-hugo"
+          git checkout deploy/hugo-pr-${PR_NUM}-${RUN_NUM}
+          git merge --squash deploy/hugo-pr-${PR_NUM}
+          git commit -m "generated static site in pr ${PR_NUM} on lexical-cloud-docs-hugo"
+          git push origin --force deploy/hugo-pr-${PR_NUM}-${RUN_NUM}:deploy/hugo-pr-${PR_NUM}
+          echo "commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
+
+      - name: Delete static site branch for pr if created and static site is now unchanged
+        if: |
+          steps.preview-public-changes.outputs.main-diff-count == '0' &&
+          steps.public-submodule-setup.outputs.main-sha != steps.public-submodule-setup.outputs.pr-sha
+        run: |
+          cd public
+          git push origin :deploy/hugo-pr-${PR_NUM}
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+
+  deploy-prep:
+    needs: build
+    if: |
+      needs.build.outputs.static-site-sha != ''
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout project with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout static site for preview
+        id: checkout-static-site
+        run: |
+          cd public
+          echo "head-commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+          git checkout deploy/hugo-pr-${PR_NUM}
+          echo "branch-commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+
+      - name: Exit if static site changed since creation
+        if: |
+          needs.build.outputs.static-site-sha != steps.checkout-static-site.outputs.branch-commit-sha
+        run: |
+          echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.branch-commit-sha}}"
+          exit 1
+
+      - name: Stage static site for preview
+        run: |
+          touch public/.nojekyll
+          echo "staging.lexical.cloud" > public/CNAME
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public
+
+  deploy:
+    needs: deploy-prep
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+  comment-on-pr:
+    needs: deploy-prep
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/github-script@v6
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
+        with:
+          script: |
+            const { PR_NUM, RUN_NUM } = process.env
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `
+            ### Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
+
+            Take these actions before merging:
+              - [ ] Approve the deployment to staging.
+              - [ ] Wait for the deployment to complete after approval.
+              - [ ] Review deployment at https://staging.lexical.cloud.
+              - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
+              - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.`
+            })

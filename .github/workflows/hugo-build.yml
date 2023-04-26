@@ -1,0 +1,98 @@
+name: hugo build
+
+on:
+  workflow_call:
+    inputs:
+      is-deployable:
+        required: true
+        type: boolean
+      artifact-name:
+        required: false
+        type: string
+        default: hugo-static-site
+      branch-name:
+        required: true
+        type: string
+      base-url:
+        required: false
+        type: string
+        default: ''
+    secrets:
+      token:
+        required: true
+      
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  preconditions:
+    if: |
+       startsWith(inputs.branch-name,'dependabot/submodules/public-') == false
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Precondition passed output
+        run: |
+          echo "Preconditions passed"
+   
+  build:
+    needs: preconditions
+    runs-on: ubuntu-22.04
+    outputs:
+      static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
+    steps:
+      - name: Checkout project with submodules
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.token }}
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.89.4'
+          extended: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.17.5'
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            themes/docsy/package-lock.json
+
+      - name: Install project dependencies
+        run: |
+          npm ci
+
+      - name: Install docsy dependencies
+        run: |
+          cd themes/docsy
+          npm ci
+
+      - name: Generate static site with hugo using base-url
+        if: inputs.base-url != ''
+        run: |
+          hugo --minify --baseURL "${BASE_URL}"
+          touch public/.nojekyll
+          echo '' > public/CNAME
+          
+        env:
+          BASE_URL: ${{ inputs.base-url }}
+
+      - name: Generate static site with hugo and default base-url
+        if: |
+          inputs.base-url == ''
+        run: |
+          hugo --minify
+
+      - name: Upload deployable artifact
+        if: | 
+          inputs.is-deployable == true
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public
+          name: ${{ inputs.artifact-name }}
