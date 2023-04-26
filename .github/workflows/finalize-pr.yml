@@ -26,15 +26,8 @@ jobs:
       github.repository == 'lexical-cloud/lexical-cloud-docs-hugo'
     runs-on: ubuntu-22.04
     steps:
-      - name: Verify artifact not present
-        id: verify-gh-pages-artifact-missing
-        run: |
-          if [ -f artifact.tar ]; then
-            echo "found artifact where it should not be"
-            exit 1
-          fi
 
-      - name: 'Verify artifacts'
+      - name: Verify artifacts
         uses: actions/github-script@v3.1.0
         with:
           script: |
@@ -91,16 +84,13 @@ jobs:
           submodules: true
           token: ${{ secrets.LC_GP_CI }}
 
-      - name: Verify artifacts not present before downloading
+      - name: Ensure artifacts downloaded to empty directory
         run: |
-          if [ -f hugo-static-site.zip ]; then
-            echo "unexpected hugo-static-site.zip exist before download"
+          if [ -f workflow-artifacts ] || [ -d workflow-artifacts ]; then
+            echo "workflow-artifacts already exist"
             exit 1
           fi
-          if [ -f artifact.tar ]; then
-            echo "unexpected artifact.tar exist before download"
-            exit 1
-          fi
+          mkdir workflow-artifacts
 
       - name: 'Download hugo-static-site artifact'
         uses: actions/github-script@v3.1.0
@@ -123,17 +113,20 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/hugo-static-site.zip', Buffer.from(download.data));
-      - run: unzip hugo-static-site.zip
-
-      - name: Setup public submodule to capture changes in github-pages
-        id: public-submodule-setup
+            fs.writeFileSync('${{github.workspace}}/workflow-artifacts/hugo-static-site.zip', Buffer.from(download.data));
+      - name: Unzip hugo-static-site artifact
         run: |
-          git status
+          cd workflow-artifacts
+          unzip hugo-static-site.zip
+
           if [ ! -f artifact.tar ]; then
             echo "missing hugo-static-site artifact"
             exit 1
           fi
+
+      - name: Setup public submodule to capture changes in github-pages
+        id: public-submodule-setup
+        run: |
           cd public
           git checkout main
           echo "main-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
@@ -143,7 +136,7 @@ jobs:
           cd ..
           rm -rf public/*
           cd public
-          tar -xvf ../artifact.tar
+          tar -xvf ../workflow-artifacts/artifact.tar
         env:
           PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
