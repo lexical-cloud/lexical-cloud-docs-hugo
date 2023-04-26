@@ -67,12 +67,13 @@ jobs:
           echo "Preconditions passed"
     
   load-pr-data:
+    needs: preconditions
     - name: Load outputs from pr data artifact
       id: load-pr-data-artifact
       uses: ./.github/workflows/pr-artifact-to-outputs.yml
 
   build:
-    needs: preconditions
+    needs: load-pr-data
     runs-on: ubuntu-22.04
     environment: staging
     outputs:
@@ -85,6 +86,14 @@ jobs:
           fetch-depth: 0
           submodules: true
           token: ${{ secrets.LC_GP_CI }}
+
+      - name: Verify artifact not present before downloading
+        id: public-submodule-setup
+        run: |
+          if [ -f artifact.tar ]; then
+            echo "unexpected artifact exist before download"
+            exit 1
+          fi
 
       - uses: actions/download-artifact@v3
         with:
