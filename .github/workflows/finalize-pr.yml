@@ -157,7 +157,6 @@ jobs:
           git push origin :deploy/hugo-pr-${PR_NUM}
         env:
           PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
-          RUN_NUM: ${{ github.run_number }}
 
   deploy-prep:
     needs: build
@@ -181,7 +180,6 @@ jobs:
           echo "branch-commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
         env:
           PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
-          RUN_NUM: ${{ github.run_number }}
 
       - name: Exit if static site changed since creation
         if: |
@@ -209,7 +207,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
