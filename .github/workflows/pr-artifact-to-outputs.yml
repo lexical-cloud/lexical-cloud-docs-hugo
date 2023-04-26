@@ -58,7 +58,7 @@ jobs:
       - name: Extract pr data artifact to outputs
         id: extract-pr-data-artifact
         run: |
-          pr_number=$(cat pr-data.txt)
+          pr_number=$(cat workflow-artifacts/pr-data.txt)
           
           is_number='^[0-9]+$'
           if ! [[ ${pr_number} =~ ${is_number} ]]; then
