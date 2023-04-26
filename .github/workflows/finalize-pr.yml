@@ -86,7 +86,6 @@ jobs:
           token: ${{ secrets.LC_GP_CI }}
 
       - name: Verify artifact not present before downloading
-        id: public-submodule-setup
         run: |
           if [ -f artifact.tar ]; then
             echo "unexpected artifact exist before download"
@@ -225,7 +224,7 @@ jobs:
           script: |
             const { PR_NUM, RUN_NUM } = process.env
             github.rest.issues.createComment({
-              issue_number: context.issue.number,
+              issue_number: PR_NUM,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
