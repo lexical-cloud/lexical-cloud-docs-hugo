@@ -68,9 +68,7 @@ jobs:
     
   load-pr-data:
     needs: preconditions
-    - name: Load outputs from pr data artifact
-      id: load-pr-data-artifact
-      uses: ./.github/workflows/pr-artifact-to-outputs.yml
+    uses: ./.github/workflows/pr-artifact-to-outputs.yml
 
   build:
     needs: load-pr-data
