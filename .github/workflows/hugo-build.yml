@@ -34,8 +34,6 @@ jobs:
     steps:
       - name: Precondition passed output
         run: |
-          pwd
-          ls
           echo "Preconditions passed"
    
   build:
@@ -68,8 +66,6 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          pwd
-          ls
           npm ci
 
       - name: Install docsy dependencies
