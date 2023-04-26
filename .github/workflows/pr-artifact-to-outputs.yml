@@ -14,10 +14,46 @@ jobs:
     outputs:
       pr-number: ${{ steps.extract-pr-data-artifact.outputs.pr-number }}
     steps:
+      - name: Ensure artifacts downloaded to empty directory
+        run: |
+          if [ -f workflow-artifacts ] || [ -d workflow-artifacts ]; then
+            echo "workflow-artifacts already exist"
+            exit 1
+          fi
+          mkdir workflow-artifacts
+
       - name: Download pr data artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/github-script@v3.1.0
         with:
-          name: pr-data
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{ github.event.workflow_run.id }},
+            });
+
+            var prDataArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == 'pr-data'
+            })[0];
+
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: prDataArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/workflow-artifacts/pr-data.zip', Buffer.from(download.data));
+
+      - name: Unzip pr-data artifact
+        run: |
+          cd workflow-artifacts
+          unzip pr-data.zip
+
+          if [ ! -f pr-data.txt ]; then
+            echo "missing pr-data artifact"
+            exit 1
+          fi
 
       - name: Extract pr data artifact to outputs
         id: extract-pr-data-artifact
