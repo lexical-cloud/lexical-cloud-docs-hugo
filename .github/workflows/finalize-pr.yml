@@ -18,11 +18,6 @@ defaults:
   run:
     shell: bash
 
-env:
-  PR_NUM: 'TODO'
-  GP_CNAME: 'staging.lexical.cloud'
-  RUN_NUM: ${{ github.run_number }}
-
 jobs:
 
   preconditions:
@@ -30,6 +25,8 @@ jobs:
     if: |
       github.repository == 'lexical-cloud/lexical-cloud-docs-hugo'
     runs-on: ubuntu-22.04
+    outputs:
+      pr-number: ${{ steps.load-pr-data-artifact.outputs.pr-number }}
     steps:
       - name: Verify artifact not present
         id: verify-gh-pages-artifact-missing
@@ -66,6 +63,10 @@ jobs:
             echo "missing hugo-static-site artifact"
             exit 1
           fi
+
+      - name: Load outputs from pr data artifact
+        id: load-pr-data-artifact
+        uses: ./github/workflows/pr-artifact-to-outputs.yml
 
       - name: Precondition passed output
         run: |
@@ -108,6 +109,10 @@ jobs:
           rm -rf public/*
           cd public
           tar -xvf ../artifact.tar
+        env:
+          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
+
   
       - name: Preview changes to public submodule
         id: preview-public-changes
@@ -133,6 +138,9 @@ jobs:
           git commit -m "generated static site in pr ${PR_NUM} on lexical-cloud-docs-hugo"
           git push origin --force deploy/hugo-pr-${PR_NUM}-${RUN_NUM}:deploy/hugo-pr-${PR_NUM}
           echo "commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+        env:
+          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
 
       - name: Delete static site branch for pr if created and static site is now unchanged
         if: |
@@ -141,6 +149,9 @@ jobs:
         run: |
           cd public
           git push origin :deploy/hugo-pr-${PR_NUM}
+        env:
+          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
 
   deploy-prep:
     needs: build
@@ -163,7 +174,7 @@ jobs:
           git checkout deploy/hugo-pr-${PR_NUM}
           echo "branch-commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
         env:
-          PR_NUM: ${{ github.event.pull_request.number }}
+          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
 
       - name: Exit if static site changed since creation
@@ -176,7 +187,7 @@ jobs:
       - name: Stage static site for preview
         run: |
           touch public/.nojekyll
-          echo "${GP_CNAME}" > public/CNAME
+          echo "staging.lexical.cloud" > public/CNAME
 
       - name: Setup Pages
         id: pages
@@ -204,7 +215,7 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         env:
-          PR_NUM: ${{ github.event.pull_request.number }}
+          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
         with:
           script: |

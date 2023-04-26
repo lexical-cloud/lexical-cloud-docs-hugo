@@ -23,8 +23,14 @@ jobs:
         run: |
           echo "Preconditions passed"
 
-  build-and-deploy:
+  save-pr-data:
     needs: preconditions
+    uses: ./github/workflows/pr-data-to-artifact.yml
+    with:
+      pr-number: ${{ github.event.pull_request.number }}
+
+  build-and-deploy:
+    needs: save-pr-data
     uses: ./.github/workflows/hugo-build.yml
     with:
       is-deployable: ${{  github.event.pull_request.head.repo.fork == false  }}

@@ -84,12 +84,13 @@ jobs:
           BASE_URL: ${{ inputs.base-url }}
 
       - name: Generate static site with hugo and default base-url
-        if: inputs.base-url == ''
+        if: |
+          inputs.base-url == ''
         run: |
           hugo --minify
 
       - name: Upload deployable artifact
-        if: 
+        if: | 
           inputs.is-deployable == true
         uses: actions/upload-pages-artifact@v1
         with:
