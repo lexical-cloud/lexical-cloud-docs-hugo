@@ -12,14 +12,15 @@ jobs:
   restore-outputs:
     runs-on: ubuntu-22.04
     outputs:
-      static-site-sha: ${{ steps.save-static-site.outputs.commit-sha }}
+      pr-number: ${{ steps.extract-pr-data-artifact.outputs.pr-number }}
     steps:
       - name: Download pr data artifact
         uses: actions/upload-artifact@v3
         with:
           name: pr-data
 
-      - name: Send pr data to outputs
+      - name: Extract pr data artifact to outputs
+        id: extract-pr-data-artifact
         run: |
           pr_number=$(cat pr-data.txt)
           

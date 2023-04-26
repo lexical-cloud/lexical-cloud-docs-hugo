@@ -25,8 +25,6 @@ jobs:
     if: |
       github.repository == 'lexical-cloud/lexical-cloud-docs-hugo'
     runs-on: ubuntu-22.04
-    outputs:
-      pr-number: ${{ steps.load-pr-data-artifact.outputs.pr-number }}
     steps:
       - name: Verify artifact not present
         id: verify-gh-pages-artifact-missing
@@ -64,14 +62,15 @@ jobs:
             exit 1
           fi
 
-      - name: Load outputs from pr data artifact
-        id: load-pr-data-artifact
-        uses: ./github/workflows/pr-artifact-to-outputs.yml
-
       - name: Precondition passed output
         run: |
           echo "Preconditions passed"
     
+  load-pr-data:
+      - name: Load outputs from pr data artifact
+        id: load-pr-data-artifact
+        uses: ./github/workflows/pr-artifact-to-outputs.yml
+
   build:
     needs: preconditions
     runs-on: ubuntu-22.04
@@ -110,7 +109,7 @@ jobs:
           cd public
           tar -xvf ../artifact.tar
         env:
-          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
 
   
@@ -139,7 +138,7 @@ jobs:
           git push origin --force deploy/hugo-pr-${PR_NUM}-${RUN_NUM}:deploy/hugo-pr-${PR_NUM}
           echo "commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
         env:
-          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
 
       - name: Delete static site branch for pr if created and static site is now unchanged
@@ -150,7 +149,7 @@ jobs:
           cd public
           git push origin :deploy/hugo-pr-${PR_NUM}
         env:
-          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
 
   deploy-prep:
@@ -174,7 +173,7 @@ jobs:
           git checkout deploy/hugo-pr-${PR_NUM}
           echo "branch-commit-sha=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
         env:
-          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
 
       - name: Exit if static site changed since creation
@@ -215,7 +214,7 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         env:
-          PR_NUM: ${{ needs.preconditions.outputs.pr-number }}
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
           RUN_NUM: ${{ github.run_number }}
         with:
           script: |
