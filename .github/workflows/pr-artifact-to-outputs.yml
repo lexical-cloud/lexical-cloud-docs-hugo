@@ -2,6 +2,10 @@ name: pr artifact to outputs
 
 on:
   workflow_call:
+    outputs:
+      pr-number:
+        description: "The pull request number"
+        value: ${{ jobs.restore-artifact.outputs.pr-number }}
       
 defaults:
   run:
@@ -9,7 +13,7 @@ defaults:
 
 jobs:
 
-  restore-outputs:
+  restore-artifact:
     runs-on: ubuntu-22.04
     outputs:
       pr-number: ${{ steps.extract-pr-data-artifact.outputs.pr-number }}
@@ -65,5 +69,5 @@ jobs:
             echo "pr-number in artifact is not numeric"
             exit 1
           fi
-
+          
           echo "pr-number=${pr_number}" >> ${GITHUB_OUTPUT}
