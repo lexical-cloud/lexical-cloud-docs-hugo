@@ -181,7 +181,9 @@ jobs:
           PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
 
   deploy-prep:
-    needs: build
+    needs:
+      - load-pr-data
+      - build
     if: |
       needs.build.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
@@ -225,7 +227,9 @@ jobs:
           path: ./public
 
   deploy:
-    needs: deploy-prep
+    needs:
+      - load-pr-data
+      - deploy-prep
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -236,7 +240,9 @@ jobs:
         uses: actions/deploy-pages@v2
 
   comment-on-pr:
-    needs: deploy-prep
+    needs:
+      - load-pr-data
+      - deploy-prep
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
