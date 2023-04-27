@@ -3,7 +3,9 @@ name: pr artifact to outputs
 on:
   workflow_call:
     outputs:
-      pr-number: ${{ jobs.restore-artifacts.outputs.pr-number }}
+      pr-number:
+        description: "The pull request number"
+        value: ${{ jobs.restore-artifacts.outputs.pr-number }}
       
 defaults:
   run:
