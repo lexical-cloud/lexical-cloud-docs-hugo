@@ -5,7 +5,7 @@ on:
     outputs:
       pr-number:
         description: "The pull request number"
-        value: ${{ jobs.restore-artifacts.outputs.pr-number }}
+        value: ${{ jobs.restore-artifact.outputs.pr-number }}
       
 defaults:
   run:
