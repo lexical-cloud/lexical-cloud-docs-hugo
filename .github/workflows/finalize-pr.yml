@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows:
       - 'validate pr'
-      - 'approve fork pr'
     types:
       - completed
 
