@@ -39,6 +39,8 @@ jobs:
               - [ ] Review any output diff on deploy/hugo-pr-${PR_NUM} in lexical-cloud.github.io repo.
               - [ ] Release the deploy to staging if output changed and acceptable. 
 
+            Expect a response on this comment when actions are completed.
+
             #### In the meantime, you may deploy into your individual space.
             
             Take the following actions on your fork:

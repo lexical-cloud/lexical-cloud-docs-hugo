@@ -68,6 +68,35 @@ jobs:
     needs: preconditions
     uses: ./.github/workflows/pr-artifact-to-outputs.yml
 
+
+  comment-on-stage:
+    needs:
+      - load-pr-data
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/github-script@v6
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
+        with:
+          script: |
+            const { PR_NUM, RUN_NUM } = process.env
+            github.rest.issues.createComment({
+              issue_number: PR_NUM,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `
+            ### Stage phase awaiting approval (run ${RUN_NUM})
+
+            @lexical-cloud/admins will take these actions:
+              - [ ] Decide whether to stage the changes.
+              - [ ] Approve the preparation of staging.
+              - [ ] Wait for staging prep to complete after approval.
+              - [ ] If applicable, decide whether to deploy for preview.
+           
+            Expect a response on this comment when actions are completed.`
+            })
+
   stage:
     needs: load-pr-data
     runs-on: ubuntu-22.04
@@ -238,7 +267,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2
 
-  comment-on-pr:
+  comment-on-deploy:
     needs:
       - load-pr-data
       - deploy-prep
@@ -263,5 +292,7 @@ jobs:
               - [ ] Wait for the deployment to complete after approval.
               - [ ] Review deployment at https://staging.lexical.cloud.
               - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
-              - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.`
+              - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.
+           
+            Expect a response on this comment when actions are completed.`
             })
