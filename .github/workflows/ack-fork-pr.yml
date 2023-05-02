@@ -2,22 +2,24 @@ name: ack fork pr
 concurrency: staging
 on:
   pull_request_target:
+    branches:
+      - 'main'
 
 permissions:
   pull-requests: write
 
 jobs:
 
-  preconditions:
+  comment-on-pr:
     # this workflow should only run on forks targeting the original repo
     if: |
       github.repository == 'lexical-cloud/lexical-cloud-docs-hugo' &&
-      github.event.pull_request.head.repo.fork == false
+      github.event.pull_request.head.repo.fork == true
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
         env:
-          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          PR_NUM: ${{ github.event.pull_request_target.number }}
           RUN_NUM: ${{ github.run_number }}
         with:
           script: |
@@ -27,7 +29,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### This PR will require approval from the repo owner.
+            ### This PR run (${RUN_NUM}) will require approval from the repo owner.
 
             The owner will perform the following actions:
               - [ ] Review the proposed changes.
