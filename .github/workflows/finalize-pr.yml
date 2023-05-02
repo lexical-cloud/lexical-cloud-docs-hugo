@@ -256,9 +256,9 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
+            ### Deploy awaiting approval (run ${RUN_NUM}) for https://staging.lexical.cloud.
 
-            Take these actions before merging:
+            @lexical-cloud/admins take these actions before merging:
               - [ ] Approve the deployment to staging.
               - [ ] Wait for the deployment to complete after approval.
               - [ ] Review deployment at https://staging.lexical.cloud.

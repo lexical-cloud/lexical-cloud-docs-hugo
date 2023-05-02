@@ -29,9 +29,9 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### This PR run (${RUN_NUM}) will require approval from the repo owner.
+            ### Changes to forked PR (run ${RUN_NUM}) will require approval.
 
-            The owner will perform the following actions:
+            @lexical-cloud/admins will perform the following actions:
               - [ ] Review the proposed changes.
               - [ ] Reach a decision on whether to proceed with the build.
               - [ ] Wait for the build to engage the staging phase.
