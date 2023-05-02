@@ -70,6 +70,8 @@ Contribute back changes:
  * Send a pull request back to this repository.
  * Work with project admins on the PR process.
 
+---
+
 ### License Summary
 
 A CC BY-SA 4.0 license is intended for the content produced from this repo. See the [LICENSE](LICENSE) file. 
