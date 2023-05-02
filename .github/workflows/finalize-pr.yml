@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows:
       - 'validate pr'
-      - 'approve fork pr'
     types:
       - completed
 
@@ -69,7 +68,36 @@ jobs:
     needs: preconditions
     uses: ./.github/workflows/pr-artifact-to-outputs.yml
 
-  build:
+
+  comment-on-stage:
+    needs:
+      - load-pr-data
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/github-script@v6
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
+        with:
+          script: |
+            const { PR_NUM, RUN_NUM } = process.env
+            github.rest.issues.createComment({
+              issue_number: PR_NUM,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `
+            ### Stage phase awaiting approval (run ${RUN_NUM})
+
+            @lexical-cloud/admins will take these actions:
+              - [ ] Decide whether to stage the changes.
+              - [ ] Approve the preparation of staging.
+              - [ ] Wait for staging prep to complete after approval.
+              - [ ] If applicable, decide whether to deploy for preview.
+           
+            Expect a response on this comment when actions are completed.`
+            })
+
+  stage:
     needs: load-pr-data
     runs-on: ubuntu-22.04
     environment: staging
@@ -183,9 +211,9 @@ jobs:
   deploy-prep:
     needs:
       - load-pr-data
-      - build
+      - stage
     if: |
-      needs.build.outputs.static-site-sha != ''
+      needs.stage.outputs.static-site-sha != ''
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout project with submodules
@@ -207,9 +235,9 @@ jobs:
 
       - name: Exit if static site changed since creation
         if: |
-          needs.build.outputs.static-site-sha != steps.checkout-static-site.outputs.branch-commit-sha
+          needs.stage.outputs.static-site-sha != steps.checkout-static-site.outputs.branch-commit-sha
         run: |
-          echo "mismatch: ${{needs.build.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.branch-commit-sha}}"
+          echo "mismatch: ${{needs.stage.outputs.static-site-sha}} != ${{steps.checkout-static-site.outputs.branch-commit-sha}}"
           exit 1
 
       - name: Stage static site for preview
@@ -239,7 +267,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v2
 
-  comment-on-pr:
+  comment-on-deploy:
     needs:
       - load-pr-data
       - deploy-prep
@@ -257,12 +285,14 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### Deploy awaiting approval (${RUN_NUM}) for https://staging.lexical.cloud.
+            ### Deploy awaiting approval (run ${RUN_NUM}) for https://staging.lexical.cloud.
 
-            Take these actions before merging:
+            @lexical-cloud/admins take these actions before merging:
               - [ ] Approve the deployment to staging.
               - [ ] Wait for the deployment to complete after approval.
               - [ ] Review deployment at https://staging.lexical.cloud.
               - [ ] Create pr for deploy/hugo-pr-${PR_NUM} on lexical-cloud.github.io repo.
-              - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.`
+              - [ ] Update public submodule commit to match deploy/hugo-pr-${PR_NUM} branch.
+           
+            Expect a response on this comment when actions are completed.`
             })

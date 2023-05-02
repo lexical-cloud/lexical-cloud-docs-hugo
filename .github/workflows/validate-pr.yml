@@ -26,7 +26,7 @@ jobs:
     with:
       pr-number: ${{ github.event.pull_request.number }}
 
-  build-and-deploy:
+  build-artifact:
     needs: save-pr-data
     uses: ./.github/workflows/hugo-build.yml
     with:
