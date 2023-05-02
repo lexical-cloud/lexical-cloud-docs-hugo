@@ -21,7 +21,7 @@ defaults:
 jobs:
 
   preconditions:
-    # this workflow should not run on forks
+    # this workflow should only run against the original repo
     if: |
       github.repository == 'lexical-cloud/lexical-cloud-docs-hugo'
     runs-on: ubuntu-22.04
