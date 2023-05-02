@@ -1,9 +1,9 @@
-name: validate pr
+name: approve fork pr
 concurrency: staging
 on:
-  pull_request:
-    branches:
-      - 'main'
+  pull_request_review:
+    types:
+      - submitted
 
 defaults:
   run:
@@ -13,7 +13,10 @@ jobs:
 
   preconditions:
     if: |
-      startsWith(github.head_ref,'dependabot/submodules/public-') == false
+       github.event.pull_request.head.repo.fork == true &&
+       github.event_name == 'pull_request_review' &&
+       github.event.review.state == 'approved' &&
+       github.actor == 'wahlax-llc'
     runs-on: ubuntu-22.04
     steps:
       - name: Precondition passed output
@@ -26,11 +29,12 @@ jobs:
     with:
       pr-number: ${{ github.event.pull_request.number }}
 
-  build-artifact:
+  build-and-deploy:
     needs: save-pr-data
     uses: ./.github/workflows/hugo-build.yml
     with:
-      is-deployable: ${{ github.repository == 'lexical-cloud/lexical-cloud-docs-hugo' }}
+      is-deployable: true
       branch-name: ${{ github.head_ref }}
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
+
