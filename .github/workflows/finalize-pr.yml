@@ -89,10 +89,9 @@ jobs:
             ### Stage phase awaiting approval (run ${RUN_NUM})
 
             @lexical-cloud/admins will take these actions:
-              - [ ] Decide whether to stage the changes.
-              - [ ] Approve the preparation of staging.
-              - [ ] Wait for staging prep to complete after approval.
-              - [ ] If applicable, decide whether to deploy for preview.
+              - [ ] Review artifacts generated for staging.
+              - [ ] Decide whether to accept changes for staging prep.
+              - [ ] If accepting, approve and monitor the preparation of staging.
            
             Expect a response on this comment when actions are completed.`
             })

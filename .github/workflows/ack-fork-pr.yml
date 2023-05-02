@@ -33,21 +33,8 @@ jobs:
 
             @lexical-cloud/admins will perform the following actions:
               - [ ] Review the proposed changes.
-              - [ ] Reach a decision on whether to proceed with the build.
-              - [ ] Wait for the build to engage the staging phase.
-              - [ ] Decide whether to proceed with staging. 
-              - [ ] Review any output diff on deploy/hugo-pr-${PR_NUM} in lexical-cloud.github.io repo.
-              - [ ] Release the deploy to staging if output changed and acceptable. 
+              - [ ] Decide whether to proceed with the build.
+              - [ ] If accepting, approve and monitor the build run.
 
-            Expect a response on this comment when actions are completed.
-
-            #### In the meantime, you may deploy into your individual space.
-            
-            Take the following actions on your fork:
-
-              - [ ] Enable Github Actions under Pages in Settings.
-              - [ ] Remove main from deployment branches in gh-pages environment.
-              - [ ] Enable workflows for the forked repo in Actions.
-              - [ ] Run the deploy-gh-pages workflow against your desired branch.
-              - [ ] Visit {username}.github.io/lexical-cloud-docs-hugo/`
+            Expect a response on this comment when actions are completed.`
             })

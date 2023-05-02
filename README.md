@@ -49,6 +49,31 @@ cd ${PROJECT_DIR}
 hugo --minify
 ```
 
+---
+
+### Contributing
+
+Most changes for the Lexical.cloud project will occur against the [lexical-cloud-docs](https://github.com/lexical-cloud/lexical-cloud-docs) repo.
+Afterwards, those data contributions will be incorporated into this repository for rendering.
+
+Customizations to that rendering require:
+ * Fork this repository
+ * Create a new branch
+ * Make desired changes
+
+Deploy to Github Pages for testing:
+ * Enable Github Actions under Pages in Settings.
+ * Remove main from deployment branches in gh-pages environment.
+ * Enable workflows for the forked repo in Actions.
+ * Run the deploy-gh-pages workflow against your desired branch.
+ * Visit {username}.github.io/lexical-cloud-docs-hugo/
+
+Contribute back changes:
+ * Send a pull request back to this repository.
+ * Work with project admins on the PR process.
+
+---
+
 ### License Summary
 
 A CC BY-SA 4.0 license is intended for the content produced from this repo. See the [LICENSE](LICENSE) file. 
