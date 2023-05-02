@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         env:
-          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
         with:
           script: |
@@ -27,7 +27,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### This PR will require approval from the repo owner.
+            ### This PR run (${RUN_NUM}) will require approval from the repo owner.
 
             The owner will perform the following actions:
               - [ ] Review the proposed changes.
