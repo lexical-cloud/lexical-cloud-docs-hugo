@@ -1,0 +1,50 @@
+name: validate forked pr 
+concurrency: staging
+on:
+  pull_request_target:
+
+permissions:
+  pull-requests: write
+
+jobs:
+
+  preconditions:
+    # this workflow should only run on forks targeting the original repo
+    if: |
+      github.repository == 'lexical-cloud/lexical-cloud-docs-hugo' &&
+      github.event.pull_request.head.repo.fork == true
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/github-script@v6
+        env:
+          PR_NUM: ${{ needs.load-pr-data.outputs.pr-number }}
+          RUN_NUM: ${{ github.run_number }}
+        with:
+          script: |
+            const { PR_NUM, RUN_NUM } = process.env
+            github.rest.issues.createComment({
+              issue_number: PR_NUM,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `
+            ### This PR will require approval from the repo owner.
+
+            The owner will perform the following actions:
+              - [ ] Review the proposed changes.
+              - [ ] Reach a decision on whether to proceed with the build.
+              - [ ] Wait for the build to engage the staging phase.
+              - [ ] Decide whether to proceed with staging. 
+              - [ ] Review any output diff on deploy/hugo-pr-${PR_NUM} in lexical-cloud.github.io repo.
+              - [ ] Release the deploy to staging if output changed and acceptable. 
+
+            #### In the meantime, you may deploy into your individual account.
+            
+            Take the following actions on your fork:
+
+              - [ ] Enable Github Actions under Pages in Settings.
+              - [ ] Remove main from deployment branches in gh-pages environment.
+              - [ ] Enable workflows for the forked repo in Actions.
+              - [ ] Run the deploy-gh-pages workflow against your desired branch.
+              - [ ] Visit <username>.github.io/lexical-cloud-docs-hugo/
+``
+            })
