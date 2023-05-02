@@ -49,6 +49,8 @@ cd ${PROJECT_DIR}
 hugo --minify
 ```
 
+---
+
 ### Contributing
 
 Most changes for the Lexical.cloud project will occur against the [lexical-cloud-docs](https://github.com/lexical-cloud/lexical-cloud-docs) repo.
