@@ -29,7 +29,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### Changes in this forked PR (run ${RUN_NUM}) require approval.
+            ### Changes in PR of this forked repo require approval.
+            _(run ${RUN_NUM} of comment-on-pr in ack-fork-pr workflow)_
 
             @lexical-cloud/admins will perform the following actions:
               - [ ] Review the proposed changes.

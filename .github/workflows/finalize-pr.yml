@@ -86,7 +86,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### Stage phase awaiting approval (run ${RUN_NUM})
+            ### Stage phase awaiting approval.
+            _(run ${RUN_NUM} of comment-on-stage in finalize-pr workflow)_
 
             @lexical-cloud/admins will take these actions:
               - [ ] Review artifacts generated for staging.
@@ -284,7 +285,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### Deploy awaiting approval (run ${RUN_NUM}) for https://staging.lexical.cloud.
+            ### Deploy awaiting approval for https://staging.lexical.cloud.
+            _(run ${RUN_NUM} of comment-on-deploy in finalize-pr workflow)_
 
             @lexical-cloud/admins take these actions before merging:
               - [ ] Approve the deployment to staging.
