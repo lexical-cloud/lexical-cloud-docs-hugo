@@ -47,5 +47,5 @@ jobs:
               - [ ] Remove main from deployment branches in gh-pages environment.
               - [ ] Enable workflows for the forked repo in Actions.
               - [ ] Run the deploy-gh-pages workflow against your desired branch.
-              - [ ] Visit <username>.github.io/lexical-cloud-docs-hugo/`
+              - [ ] Visit {username}.github.io/lexical-cloud-docs-hugo/`
             })
