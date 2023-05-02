@@ -12,7 +12,7 @@ jobs:
     # this workflow should only run on forks targeting the original repo
     if: |
       github.repository == 'lexical-cloud/lexical-cloud-docs-hugo' &&
-      github.event.pull_request.head.repo.fork == true
+      github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
