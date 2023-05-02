@@ -30,7 +30,7 @@ jobs:
     needs: save-pr-data
     uses: ./.github/workflows/hugo-build.yml
     with:
-      is-deployable: ${{ github.event.pull_request.head.repo.fork == false }}
+      is-deployable: ${{ github.repository == 'lexical-cloud/lexical-cloud-docs-hugo' }}
       branch-name: ${{ github.head_ref }}
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
