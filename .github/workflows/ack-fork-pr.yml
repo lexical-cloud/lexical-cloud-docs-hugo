@@ -29,15 +29,17 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### This PR run (${RUN_NUM}) will require approval from the repo owner.
+            ### Changes in this forked PR (run ${RUN_NUM}) require approval.
 
-            The owner will perform the following actions:
+            @lexical-cloud/admins will perform the following actions:
               - [ ] Review the proposed changes.
               - [ ] Reach a decision on whether to proceed with the build.
               - [ ] Wait for the build to engage the staging phase.
               - [ ] Decide whether to proceed with staging. 
               - [ ] Review any output diff on deploy/hugo-pr-${PR_NUM} in lexical-cloud.github.io repo.
               - [ ] Release the deploy to staging if output changed and acceptable. 
+
+            Expect a response on this comment when actions are completed.
 
             #### In the meantime, you may deploy into your individual space.
             
