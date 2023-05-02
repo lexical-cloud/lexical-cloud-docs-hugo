@@ -51,7 +51,7 @@ hugo --minify
 
 ### Contributing
 
-Most changes for th Lexical.cloud project will occur against the [lexical-cloud-docs](https://github.com/lexical-cloud/lexical-cloud-docs) repo.
+Most changes for the Lexical.cloud project will occur against the [lexical-cloud-docs](https://github.com/lexical-cloud/lexical-cloud-docs) repo.
 Afterwards, those data contributions will be incorporated into this repository for rendering.
 
 Customizations to that rendering require:
@@ -68,6 +68,7 @@ Deploy to Github Pages for testing:
 
 Contribute back changes:
  * Send a pull request back to this repository.
+ * Work with project admins on the PR process.
 
 ### License Summary
 
