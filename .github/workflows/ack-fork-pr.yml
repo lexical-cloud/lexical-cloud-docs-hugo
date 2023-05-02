@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         env:
-          PR_NUM: ${{ github.event.pull_request_target.number }}
+          PR_NUM: ${{ github.event.pull_request.number }}
           RUN_NUM: ${{ github.run_number }}
         with:
           script: |
