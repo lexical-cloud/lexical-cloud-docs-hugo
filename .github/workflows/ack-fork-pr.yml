@@ -29,7 +29,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-            ### Changes to forked PR (run ${RUN_NUM}) will require approval.
+            ### Changes in this forked PR (run ${RUN_NUM}) require approval.
 
             @lexical-cloud/admins will perform the following actions:
               - [ ] Review the proposed changes.
