@@ -1,0 +1,13 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "14.17.5"
+    },
+    "ghcr.io/devcontainers/features/hugo:1": {
+        "version" : "0.89.4",
+        "extended" : true
+        
+    }    
+  }
+}
