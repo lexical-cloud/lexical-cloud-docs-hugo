@@ -1,3 +1,9 @@
+build:
+	hugo --minify
+
+run:
+	hugo serve
+
 setup:
 	git submodule init
 	git submodule update
