@@ -4,9 +4,9 @@ This repo generates a static website based on the [Docsy theme](https://www.docs
 
 ### Setup Env
 
-It's easiest to utilize the devcontainer for this project on GitHub Codespaces.
+It's easiest to launch the dev container for this project on GitHub Codespaces.
 
-**OR**
+**OR**, follow the setup instructions below.
 
 Install Prerequisite tools:
 
