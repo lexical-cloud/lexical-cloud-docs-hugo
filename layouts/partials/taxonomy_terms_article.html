@@ -6,7 +6,7 @@
   <br>
   <ul class="taxonomy-terms ml-2">
     {{ range ($context.GetTerms $taxo) }}
-      <li><a class="taxonomy-term" href="{{ .Permalink }}" data-taxonomy-term="{{ urlize .LinkTitle }}"><span class="taxonomy-label">{{ .LinkTitle }}</span></a></li>
+      <li><a class="taxonomy-term" href="{{ .RelPermalink }}" data-taxonomy-term="{{ urlize .LinkTitle }}"><span class="taxonomy-label">{{ .LinkTitle }}</span></a></li>
     {{ end }}
   </ul>
 </div>

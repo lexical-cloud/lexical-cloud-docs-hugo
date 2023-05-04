@@ -4,49 +4,38 @@ This repo generates a static website based on the [Docsy theme](https://www.docs
 
 ### Setup Env
 
+It's easiest to launch the dev container for this project on GitHub Codespaces.
+
+**OR**, follow the setup instructions below.
+
 Install Prerequisite tools:
 
   * [Install Hugo](https://gohugo.io/getting-started/installing/)
   * [Check Docsy Prereqs](https://www.docsy.dev/docs/get-started/docsy-as-module/installation-prerequisites/)
 
-### Setup Project
+#### Setup Project
 
 Clone repository:
 ```
 git clone <url-here>
-```
-
-Add submodules for theme and website:
-```
 cd ${PROJECT_DIR}
-git submodule init
-git submodule update
 ```
 
-Dependency of site generation:
+Then:
 ```
-npm install
-```
-Note: newer versions may exist now
-
-Install theme dependencies:
-```
-cd ${PROJECT_DIR}/themes/docsy
-npm install
+make setup
 ```
 
 ### Start Using
 
 Run local server:
 ```
-cd ${PROJECT_DIR}
-hugo serve
+make run
 ```	
 
 Generate static site:
 ```
-cd ${PROJECT_DIR}
-hugo --minify
+make build
 ```
 
 ---
