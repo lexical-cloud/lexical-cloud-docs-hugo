@@ -12,7 +12,7 @@
         {{ range $taxonomy }}
           {{ $termUsageCount := (len (where .Pages "Section" "==" "products")) }}
           {{ if gt $termUsageCount 0 }}
-            <li><a class="taxonomy-term" href="{{ .Page.Permalink }}" data-taxonomy-term="{{ urlize .Page.Title }}"><span class="taxonomy-label">{{ .Page.Title }}</span><span class="taxonomy-count">{{ $termUsageCount }}</span></a></li>
+            <li><a class="taxonomy-term" href="{{ .Page.RelPermalink }}" data-taxonomy-term="{{ urlize .Page.Title }}"><span class="taxonomy-label">{{ .Page.Title }}</span><span class="taxonomy-count">{{ $termUsageCount }}</span></a></li>
           {{ end }}
         {{ end }}
       </ul>
