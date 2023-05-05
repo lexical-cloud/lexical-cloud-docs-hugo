@@ -47,10 +47,14 @@ Afterwards, those data contributions will be incorporated into this repository f
 
 Customizations to that rendering require:
  * Fork this repository
- * Create a new branch
+ * Create new branch from main
+ * Launch project in Github Codespaces _(optional)_
  * Make desired changes
 
-Deploy to Github Pages for testing:
+Preview and test within Github Codespaces. _(recommended)_
+
+**OR**, deploy to Github Pages via provided GitHub Action:
+ * Commit and push changes to branch on fork.
  * Enable Github Actions under Pages in Settings.
  * Remove main from deployment branches in gh-pages environment.
  * Enable workflows for the forked repo in Actions.
@@ -58,6 +62,7 @@ Deploy to Github Pages for testing:
  * Visit {username}.github.io/lexical-cloud-docs-hugo/
 
 Contribute back changes:
+ * Commit and push desired changes to branch on fork.
  * Send a pull request back to this repository.
  * Work with project admins on the PR process.
 
